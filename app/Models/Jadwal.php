@@ -9,13 +9,15 @@ class Jadwal extends Model
 {
     use HasFactory;
 
+    protected $with = ['peziarah'];
+
     protected $guarded = [];
 
     protected $table = "jadwal";
 
     public function peziarah()
     {
-        return $this->belongsToMany(Peziarah::class);
+        return $this->hasMany(Peziarah::class, 'jadwal_id');
     }
 
     // ...

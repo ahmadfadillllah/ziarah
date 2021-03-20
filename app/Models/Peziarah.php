@@ -13,6 +13,8 @@ class Peziarah extends Model
 
     protected $table = 'peziarah';
 
+    protected $with = ['jadwal'];
+
     public function jenazah()
     {
         return $this->belongsTo(Jenazah::class);
@@ -20,7 +22,7 @@ class Peziarah extends Model
 
     public function jadwal()
     {
-        return $this->belongsToMany(Jadwal::class);
+        return $this->belongsTo(Jadwal::class, 'jadwal_id');
     }
 
     // ...

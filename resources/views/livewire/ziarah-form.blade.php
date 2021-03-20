@@ -19,7 +19,7 @@
                     <div class="col-2">
                         <div class="input-group">
                             <label class="label">Email*</label>
-                            <input class="input--style-4" type="email" name="email" wire:model="email">
+                            <input class="input--style-4" type="email" name="email" wire:model.defer="email">
                             @error('email')
                             <small style="color: #ff6565">{{ $message }}</small>
                             @enderror
@@ -40,6 +40,9 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
+                            @error('jenis_kelamin')
+                            <small style="color: #ff6565; margin-top: 8px; display: inline-block">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -47,7 +50,7 @@
 
                 <div class="input-group">
                     <label class="label">No. Handphone* (Whatsapp)</label>
-                    <input class="input--style-4" type="text" name="nohp" wire:model="no_hp">
+                    <input class="input--style-4" type="text" name="nohp" wire:model.defer="no_hp">
                     @error('no_hp')
                     <small style="color: #ff6565">{{ $message }}</small>
                     @enderror
@@ -59,7 +62,7 @@
 
                         <div class="input-group">
                             <label class="label">Nama Jenazah*</label>
-                            <input class="input--style-4" type="text" wire:model.debounce.200ms="namaJenazah">
+                            <input class="input--style-4" type="text" wire:model.debounce.100ms="namaJenazah">
                             @error('namaJenazah')
                             <small style="color: #ff6565">{{ $message }}</small>
                             @enderror
@@ -67,8 +70,7 @@
                             <div class="suggestion-box">
                                 @foreach ($suggestion_name as $data)
                                 <button type="button" class="sugg-item"
-                                    wire:click="ubahNama('{{ Crypt::encrypt($data['id']) }}')" @if($data['id']===null )
-                                    @endif>
+                                    wire:click="dapatkanDataLenkap('{{ Crypt::encrypt($data['id']) }}')">
                                     @if ($data['blok'] !== null)
                                     {{"({$data['blok']})"}}
                                     @endif

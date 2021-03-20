@@ -2,24 +2,29 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Jadwal;
-use App\Models\Jenazah;
-use App\Models\Peziarah;
+use App\Models\{Jadwal, Jenazah, Peziarah};
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class ZiarahForm extends Component
 {
-
     public $daftar_jadwal = [];
 
-    public $nama, $jenis_kelamin, $email, $no_hp;
+    public $nama, $jenis_kelamin, $email, $no_hp, $jadwal;
 
-    public $jenazah_id, $namaJenazah, $alamat_jenazah, $jadwal;
+    public $jenazah_id, $namaJenazah, $alamat_jenazah;
 
     public $suggestion_name = [];
 
     public function mount()
+    {
+        $this->dapatkanJadwal();
+    }
+
+    /**
+     *  Fungsi untuk mendapatkan jadwal yang tersedia
+     */
+    private function dapatkanJadwal()
     {
         $jadwal = Jadwal::where('kuota', '<', '2')->get();
 
@@ -42,13 +47,17 @@ class ZiarahForm extends Component
 
     public function render()
     {
-        return view('livewire.ziarah-form')
-            ->extends('layouts.form.dashboard')->section('content');
+        $view = (object) view('livewire.ziarah-form');
+        return $view->extends('layouts.form.dashboard')->section('content');
     }
 
-    public function cariJenazah()
+    /**
+     *  Fungsi untuk mencari jenazah berdasarkan nama jenazah
+     */
+    public function cariJenazah(): void
     {
-        $result = Jenazah::where('nama', 'LIKE', "%$this->namaJenazah%")->get(['id', 'nama', 'blok']);
+        $result = Jenazah::where('nama', 'LIKE', "%$this->namaJenazah%")
+            ->get(['id', 'nama', 'blok']);
 
         if (count($result) === 0) {
             $result = [[
@@ -63,19 +72,21 @@ class ZiarahForm extends Component
         // ...
     }
 
-    public function ubahNama(string $id)
+    /**
+     *  Fungsi untuk mendapatkan data lenkap dari jenazah
+     *  berdasarkan nama yang di masukkan peziarah
+     */
+    public function dapatkanDataLenkap(string $id): void
     {
-
         try {
 
             $id     =   Crypt::decrypt($id);
-
             $jenazah_data = Jenazah::find($id);
 
-            $this->namaJenazah  =   $jenazah_data->nama;
-            $this->jenazah_id   =   $jenazah_data->id;
-            $this->alamat_jenazah   = $jenazah_data->alamat;
-            $this->suggestion_name = [];
+            $this->namaJenazah      =   $jenazah_data->nama;
+            $this->jenazah_id       =   $jenazah_data->id;
+            $this->alamat_jenazah   =   $jenazah_data->alamat;
+            $this->suggestion_name  =   [];
 
             // ...
         } catch (\Exception $exception) {
@@ -92,41 +103,51 @@ class ZiarahForm extends Component
         // ...
     }
 
+    /**
+     *  Fungsi untuk menyimpan data yang telah diinput
+     */
     public function simpan()
     {
 
         $aturan = [
-            'nama'  =>  ['required', 'min:2', 'max:150'],
-            'namaJenazah' =>  ['required'],
-            'email' =>  ['required', 'email'],
-            'jadwal' =>  ['required'],
-            'no_hp' =>  ['required', 'numeric']
+            'nama'          =>  ['required', 'min:2', 'max:150'],
+            'namaJenazah'   =>  ['required'],
+            'email'         =>  ['required', 'email', 'unique:peziarah,email'],
+            'jadwal'        =>  ['required'],
+            'jenis_kelamin' =>  ['required'],
+            'no_hp'         =>  ['required', 'numeric', 'unique:peziarah,no_hp'],
         ];
 
         // Pesan validasi jika error
         $pesan = [
 
             // Field nama
-            'nama.required' =>  'Harap nama peziarah di isi!',
-            'nama.min' =>  'Nama peziarah tidak boleh kurang dari 2 karakter',
-            'nama.max' =>  'Nama peziarah tidak boleh lebug dari 150 karakter',
+            'nama.required' =>  'Harap masukan nama peziarah!',
+            'nama.min'      =>  'Nama peziarah tidak boleh kurang dari 2 karakter',
+            'nama.max'      =>  'Nama peziarah tidak boleh lebug dari 150 karakter',
 
             // Field nama jenazah
             'namaJenazah.required' => 'Harap masukkan nama dari jenazah!',
 
             // Field email
-            'email.required' => "Harap masukan email.",
-            'email.email' => "Harap masukan email yang valid/benar.",
+            'email.required'    => "Harap masukan email.",
+            'email.email'       => "Harap masukan email yang valid/benar.",
+            'email.unique'      => "Email ini telah terdaftar!, silahkan masukkan email baru.",
 
             // Field jadwal
-            'jadwal.required' => 'Harap masukkan jadwal.',
+            'jadwal.required'   => 'Harap masukkan jadwal.',
+
+            // Field jenis kelamin
+            'jenis_kelamin.required' =>  "Silahkan masukkan jenis kelamin dari pezirah.",
 
             // Field no hp
-            'no_hp.required' => 'Silahkan masukkan no whatsapp yng aktif.',
-            'no_hp.numeric' => 'Kolom nomor hp hanya boleh berisikan angka.',
+            'no_hp.required'    => 'Silahkan masukkan no whatsapp yang aktif.',
+            'no_hp.numeric'     => 'Kolom nomor hp hanya boleh berisikan angka.',
+            'no_hp.unique'      => 'Nomor telepon(whatsapp) telah terdaftar!, Silahkan masukkan nomor baru.',
 
         ];
 
+        // validasi input
         $this->validate($aturan, $pesan);
 
         $data['nama']           =   $this->nama;
@@ -137,7 +158,6 @@ class ZiarahForm extends Component
         $data['no_hp']          =   $this->no_hp;
 
         try {
-
             $jenazah = Jenazah::find($this->jenazah_id);
 
             $result = $jenazah->peziarah()->create($data);
@@ -152,21 +172,34 @@ class ZiarahForm extends Component
                 'kuota' =>  $kuota + 1,
             ]);
 
-            $this->reset('nama', 'namaJenazah', 'jenazah_id', 'jenis_kelamin', 'jadwal', 'email', 'no_hp');
+            // reset semua property user
+            $this->reset(
+                'nama',
+                'namaJenazah',
+                'jenazah_id',
+                'jenis_kelamin',
+                'alamat_jenazah',
+                'jadwal',
+                'email',
+                'no_hp',
+            );
+
+            $this->dapatkanJadwal();
 
             return  $this->dispatchBrowserEvent('onActionInfo', [
                 'type'    =>    'success',
-                'title'   =>    "Berhasil",
-                'message' =>    "Berhasil menambahkan data",
+                'title'   =>    "Berhasil mendaftarkan peziarah!",
+                'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
+                                anda melalui email atau whatsapp yang telah anda masukkan",
             ]);
 
             // ...
         } catch (\Exception $e) {
 
             $this->dispatchBrowserEvent('onActionInfo', [
-                'type'  =>  'error',
-                'title'   =>    "Error",
-                'message' => $e->getMessage(),
+                'type'      =>  'error',
+                'title'     =>  "Error",
+                'message'   =>  $e->getMessage(),
             ]);
 
             // ...
