@@ -27,11 +27,11 @@
     <link href="{{ asset('form/css/main.css') }}" rel="stylesheet" media="all">
 
     {{-- SweetAlerts2 --}}
-    <script src="{{ asset('sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
     <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
     <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
-    <script src="{{ asset('sweetalert2/sweetalert2.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
+    <script src="{{ asset('sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('sweetalert2/dist/sweetalert2.min.css') }}">
 
     <style>
         .suggestion-box {
@@ -55,7 +55,7 @@
             width: 100%;
             color: #666666;
             text-transform: capitalize;
-            font-size: 18px;
+            font-size: 15px;
             cursor: pointer;
             transition: all .5s;
         }

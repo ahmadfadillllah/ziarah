@@ -31,9 +31,17 @@ Route::get('/import', function () {
             continue;
         }
 
-        Jenazah::create([
-            'nama' => $jenazah[1],
-        ]);
+        try {
+            Jenazah::create([
+                'blok'  =>  $jenazah[0],
+                'nama' => $jenazah[1],
+                'tgl_lahir' => $jenazah[2],
+                'tgl_wafat' => $jenazah[3],
+                'alamat' => $jenazah[5],
+            ]);
+        } catch (\Exception $e) {
+            //
+        }
 
         // ...
     }

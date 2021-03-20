@@ -2,18 +2,38 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Jadwal;
 use App\Models\Jenazah;
+use App\Models\Peziarah;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class ZiarahForm extends Component
 {
 
+    public $daftar_jadwal = [];
+
     public $nama, $jenis_kelamin, $email, $no_hp;
 
-    public $jenazah_id, $namaJenazah, $tgl_wafat, $jadwal;
+    public $jenazah_id, $namaJenazah, $alamat_jenazah, $jadwal;
 
     public $suggestion_name = [];
+
+    public function mount()
+    {
+        $jadwal = Jadwal::where('kuota', '<', '2')->get();
+
+        if (count($jadwal) === 0) {
+            $this->daftar_jadwal  = [
+                [
+                    'id'        =>  null,
+                    'jadwal'    =>  "Jadwal tidak tersedia, coba lagi besok."
+                ]
+            ];
+        } else {
+            $this->daftar_jadwal = $jadwal;
+        }
+    }
 
     public function updatedNamaJenazah($k, $v)
     {
@@ -28,21 +48,46 @@ class ZiarahForm extends Component
 
     public function cariJenazah()
     {
-        $result = Jenazah::where('nama', 'LIKE', "%$this->namaJenazah%")->get(['id', 'nama', 'tgl_wafat']);
+        $result = Jenazah::where('nama', 'LIKE', "%$this->namaJenazah%")->get(['id', 'nama', 'blok']);
+
+        if (count($result) === 0) {
+            $result = [[
+                'nama'  =>  "Nama jenazah tidak ditemukan.",
+                'id'    =>  null,
+                'blok'  =>  null,
+            ]];
+        }
 
         $this->suggestion_name  = $result;
 
         // ...
     }
 
-    public function ubahNama(string $nama_lenkap, string $id)
+    public function ubahNama(string $id)
     {
 
-        $id     =   Crypt::decrypt($id);
+        try {
 
-        $this->namaJenazah  =   $nama_lenkap;
-        $this->jenazah_id   =   $id;
-        $this->suggestion_name = [];
+            $id     =   Crypt::decrypt($id);
+
+            $jenazah_data = Jenazah::find($id);
+
+            $this->namaJenazah  =   $jenazah_data->nama;
+            $this->jenazah_id   =   $jenazah_data->id;
+            $this->alamat_jenazah   = $jenazah_data->alamat;
+            $this->suggestion_name = [];
+
+            // ...
+        } catch (\Exception $exception) {
+
+            $this->dispatchBrowserEvent('onActionInfo', [
+                'type'  =>  'error',
+                'title'   => "Error",
+                'message' => 'Data tidak ditemukan.',
+            ]);
+
+            // ...
+        }
 
         // ...
     }
@@ -53,7 +98,7 @@ class ZiarahForm extends Component
         $aturan = [
             'nama'  =>  ['required', 'min:2', 'max:150'],
             'namaJenazah' =>  ['required'],
-            'email' =>  ['nullable', 'email'],
+            'email' =>  ['required', 'email'],
             'jadwal' =>  ['required'],
             'no_hp' =>  ['required', 'numeric']
         ];
@@ -70,6 +115,7 @@ class ZiarahForm extends Component
             'namaJenazah.required' => 'Harap masukkan nama dari jenazah!',
 
             // Field email
+            'email.required' => "Harap masukan email.",
             'email.email' => "Harap masukan email yang valid/benar.",
 
             // Field jadwal
@@ -77,22 +123,44 @@ class ZiarahForm extends Component
 
             // Field no hp
             'no_hp.required' => 'Silahkan masukkan no whatsapp yng aktif.',
-            'no_hp.numeric' => 'Kolom nomor hp hanya boleh berisikan anka.',
+            'no_hp.numeric' => 'Kolom nomor hp hanya boleh berisikan angka.',
 
         ];
 
         $this->validate($aturan, $pesan);
 
-        $data['peziarah']       =   $this->nama;
-        $data['nama_jenazah']   =   $this->namaJenazah;
+        $data['nama']           =   $this->nama;
         $data['jenazah_id']     =   $this->jenazah_id;
-        $data['email']          =   $this->email;
-        $data['tgl_wafat']      =   $this->tgl_wafat;
         $data['jenis_kelamin']  =   $this->jenis_kelamin;
-        $data['jadwal']         =   $this->jadwal;
+        $data['jadwal_id']      =   1;
+        $data['email']          =   $this->email;
         $data['no_hp']          =   $this->no_hp;
 
-        dd($data);
+        try {
+
+            $jenazah = Jenazah::find($this->jenazah_id);
+
+            $result = $jenazah->peziarah()->create($data);
+
+            if (!$result) throw new \Exception("Gagal menambahkan peziarah.");
+
+            return  $this->dispatchBrowserEvent('onActionInfo', [
+                'type'    =>    'success',
+                'title'   =>    "Berhasil",
+                'message' =>    "Berhasil menambahkan data",
+            ]);
+
+            // ...
+        } catch (\Exception $e) {
+
+            $this->dispatchBrowserEvent('onActionInfo', [
+                'type'  =>  'error',
+                'title'   =>    "Error",
+                'message' => $e->getMessage(),
+            ]);
+
+            // ...
+        }
 
         // ...
     }
