@@ -132,7 +132,7 @@ class ZiarahForm extends Component
         $data['nama']           =   $this->nama;
         $data['jenazah_id']     =   $this->jenazah_id;
         $data['jenis_kelamin']  =   $this->jenis_kelamin;
-        $data['jadwal_id']      =   1;
+        $data['jadwal_id']      =   $this->jadwal;
         $data['email']          =   $this->email;
         $data['no_hp']          =   $this->no_hp;
 
@@ -143,6 +143,16 @@ class ZiarahForm extends Component
             $result = $jenazah->peziarah()->create($data);
 
             if (!$result) throw new \Exception("Gagal menambahkan peziarah.");
+
+            $jadwal     =   Jadwal::find($this->jadwal);
+
+            $kuota  = $jadwal->kuota;
+
+            $jadwal->update([
+                'kuota' =>  $kuota + 1,
+            ]);
+
+            $this->reset('nama', 'namaJenazah', 'jenazah_id', 'jenis_kelamin', 'jadwal', 'email', 'no_hp');
 
             return  $this->dispatchBrowserEvent('onActionInfo', [
                 'type'    =>    'success',
