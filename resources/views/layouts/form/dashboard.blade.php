@@ -22,6 +22,13 @@
 
     <!-- Main CSS-->
     <link href="{{ asset('form/css/main.css') }}" rel="stylesheet" media="all">
+
+    {{-- SweetAlerts2 --}}
+    <script src="{{ asset('sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+    <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+    <script src="{{ asset('sweetalert2/sweetalert2.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
 </head>
 
 <body>
@@ -29,7 +36,8 @@
         <div class="wrapper wrapper--w680">
             <div class="card card-4">
                 <div class="card-body">
-                    <h2 class="title">PENDAFTARAN ZIARAH KUBUR TPK MACANDA</h2>
+                    <img src="{{ asset('form/images/logo.png') }}" alt="" srcset="" width="150px" style="display: block; margin: auto;">
+                    <center><h2 class="title">PENDAFTARAN ZIARAH KUBUR TPK MACANDA</h2></center>
                     <form method="POST">
 
                         <div class="input-group">
@@ -70,6 +78,7 @@
                             <label class="label">Nama Jenazah</label>
                             <input class="input--style-4" type="text" name="namajenazah">
                         </div>
+
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
@@ -89,9 +98,14 @@
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select name="jadwalziarah">
                                     <option disabled="disabled" selected="selected">Choose option</option>
-                                    <option>Subject 1</option>
-                                    <option>Subject 2</option>
-                                    <option>Subject 3</option>
+                                    <option>09.30 - 10.00 WITA</option>
+                                    <option>10.00 - 10.30 WITA</option>
+                                    <option>10.30 - 11.00 WITA</option>
+                                    <option>11.00 - 11.30 WITA</option>
+                                    <option>15.30 - 16.00 WITA</option>
+                                    <option>16.00 - 16.30 WITA</option>
+                                    <option>16.30 - 17.00 WITA</option>
+                                    <option>17.00 - 17.30 WITA</option>
                                 </select>
                                 <div class="select-dropdown"></div>
                             </div>
