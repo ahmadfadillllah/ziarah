@@ -14,11 +14,8 @@ class JenazahImport implements ToModel
      */
     public function model(array $row)
     {
-        dd($row);
         return new Jenazah([
             'nama'  =>  $row[1],
-            'tgl_lahir' => $row[2],
-            'tgl_wafat' =>  $row[3]
         ]);
     }
 }
