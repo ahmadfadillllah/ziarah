@@ -11,10 +11,13 @@
     <title>Form Pendaftaran</title>
 
     <!-- Icons font CSS-->
-    <link href="{{ asset('form/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('form/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet"
+        media="all">
     <link href="{{ asset('form/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">
     <!-- Font special for pages-->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Vendor CSS-->
     <link href="{{ asset('form/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
@@ -29,96 +32,88 @@
     <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
     <script src="{{ asset('sweetalert2/sweetalert2.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
+
+    <style>
+        .suggestion-box {
+            position: absolute;
+            background-color: #ffffff;
+            box-shadow: 0 0 5px #91919152;
+            padding: 8px;
+            border-radius: 5px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .suggestion-box .sugg-item {
+            border: none;
+            outline: none;
+            padding: 8px 5px;
+            position: relative;
+            width: 100%;
+            color: #666666;
+            text-transform: capitalize;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all .5s;
+        }
+
+        .suggestion-box .sugg-item:hover {
+            background-color: rgba(236, 236, 236, 0.425);
+            color: #777777;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 350px;
+        }
+
+        .select-wrapper::after {
+            color: black;
+            content: '▾';
+            margin-right: 10px;
+            pointer-events: none;
+            position: absolute;
+            right: 10px;
+            top: 7px;
+            font-size: 20px;
+        }
+
+        .select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background: white;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .select:focus {
+            color: black;
+        }
+
+        .select::-ms-expand {
+            display: none;
+        }
+    </style>
+
+    @livewireStyles
+    @livewireScripts
+
 </head>
 
 <body>
-    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
-        <div class="wrapper wrapper--w680">
-            <div class="card card-4">
-                <div class="card-body">
-                    <img src="{{ asset('form/images/logo.png') }}" alt="" srcset="" width="150px" style="display: block; margin: auto;">
-                    <center><h2 class="title">PENDAFTARAN ZIARAH KUBUR TPK MACANDA</h2></center>
-                    <form method="POST">
 
-                        <div class="input-group">
-                            <label class="label">Nama Peziarah</label>
-                            <input class="input--style-4" type="text" name="namapeziarah">
-                        </div>
-
-
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Tanggal Meninggal</label>
-                                    <div class="input-group-icon">
-                                        <input class="input--style-4 js-datepicker" type="text" name="tanggalmeninggal">
-                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Jenis Kelamin</label>
-                                    <div class="p-t-10">
-                                        <label class="radio-container m-r-45">Pria
-                                            <input type="radio" name="jeniskelamin">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio-container">Wanita
-                                            <input type="radio" name="jeniskelamin">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label class="label">Nama Jenazah</label>
-                            <input class="input--style-4" type="text" name="namajenazah">
-                        </div>
-
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Email</label>
-                                    <input class="input--style-4" type="email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">No. Handphone</label>
-                                    <input class="input--style-4" type="text" name="nohp">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label class="label">Jadwal Ziarah</label>
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="jadwalziarah">
-                                    <option disabled="disabled" selected="selected">Choose option</option>
-                                    <option>09.30 - 10.00 WITA</option>
-                                    <option>10.00 - 10.30 WITA</option>
-                                    <option>10.30 - 11.00 WITA</option>
-                                    <option>11.00 - 11.30 WITA</option>
-                                    <option>15.30 - 16.00 WITA</option>
-                                    <option>16.00 - 16.30 WITA</option>
-                                    <option>16.30 - 17.00 WITA</option>
-                                    <option>17.00 - 17.30 WITA</option>
-                                </select>
-                                <div class="select-dropdown"></div>
-                            </div>
-                        </div>
-
-                        <div class="p-t-15">
-                            <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    @yield('content')
 
     <!-- Jquery JS-->
     <script src="{{ asset('form/vendor/jquery/jquery.min.js') }}"></script>
