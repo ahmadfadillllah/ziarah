@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('layouts.form.dashboard');
 });
 
+Route::get('/data-jenazah', function () {
+    return view('layouts.admin.data-jenazah');
+})->name('dataJenazah');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    return view('layouts.admin.dashboard');
 })->name('dashboard');
