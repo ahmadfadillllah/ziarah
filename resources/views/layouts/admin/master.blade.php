@@ -36,12 +36,18 @@
                     <!-- Nav items -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" href="examples/dashboard.html">
+                            <a class="nav-link active" href="{{ route('dashboard') }}">
                                 <i class="ni ni-tv-2 text-primary"></i>
                                 <span class="nav-link-text">Dashboard</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dataPeziarah') }}">
+                                <i class="ni ni-bullet-list-67 text-default"></i>
+                                <span class="nav-link-text">Data Peziarah</span>
+                            </a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dataJenazah') }}">
                                 <i class="ni ni-bullet-list-67 text-default"></i>

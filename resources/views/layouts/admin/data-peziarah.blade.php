@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 @section('content')
-@section('title', 'Data Jenazah')
+@section('title', 'Data Peziarah')
 
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
@@ -30,7 +30,7 @@
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header border-0">
-                    <h3 class="mb-0">List Jenazah</h3>
+                    <h3 class="mb-0">List Peziarah</h3>
                 </div>
                 <!-- Light table -->
                 <div class="table-responsive">
@@ -38,12 +38,13 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" class="sort" data-sort="name">Blok</th>
-                                <th scope="col" class="sort" data-sort="budget">Nama Jenazah</th>
-                                <th scope="col" class="sort" data-sort="status">Tgl. Lahir</th>
-                                <th scope="col" class="sort" data-sort="status">Tgl. Wafat</th>
-                                <th scope="col" class="sort" data-sort="status">Agama</th>
+                                <th scope="col" class="sort" data-sort="budget">Nama Peziarah</th>
+                                <th scope="col" class="sort" data-sort="status">Email</th>
+                                <th scope="col" class="sort" data-sort="status">Jenis Kelamin</th>
+                                <th scope="col" class="sort" data-sort="status">No. Handphone</th>
+                                <th scope="col" class="sort" data-sort="status">Nama Jenazah</th>
                                 <th scope="col" class="sort" data-sort="status">Alamat</th>
-                                <th scope="col" class="sort" data-sort="status">Rumah Sakit</th>
+                                <th scope="col" class="sort" data-sort="status">Jadwal Peziarah</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -56,6 +57,11 @@
                                 </th>
                                 <td class="budget">
                                     $2500 USD
+                                </td>
+                                <td>
+                                    <span class="badge badge-dot mr-4">
+                                        <span class="status">Pending</span>
+                                    </span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">

@@ -45,6 +45,10 @@ Route::get('/data-jenazah', function () {
     return view('layouts.admin.data-jenazah');
 })->name('dataJenazah');
 
+Route::get('/data-peziarah', function () {
+    return view('layouts.admin.data-peziarah');
+})->name('dataPeziarah');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('layouts.admin.dashboard');
 })->name('dashboard');
