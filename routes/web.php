@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Livewire\ZiarahForm;
+use App\Imports\JenazahImport;
+use App\Models\Jenazah;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +17,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.form.dashboard');
+Route::get('/', ZiarahForm::class)->name('daftar');
+
+Route::get('/import', function () {
+
+    $data = Excel::toArray(new JenazahImport, storage_path('/app/MACANDA GROUP.xlsx'));
+    $index = 0;
+
+    foreach ($data[0] as $jenazah) {
+
+        if ($index === 0) {
+            $index++;
+            continue;
+        }
+
+        Jenazah::create([
+            'nama' => $jenazah[1],
+        ]);
+
+        // ...
+    }
+
+    // ...
 });
 
 Route::get('/data-jenazah', function () {
