@@ -221,6 +221,8 @@ class ZiarahForm extends Component
 
                 $waktu_ziarah = WaktuZiarah::find($this->waktu_dipilih);
 
+                $waktu_ziarah->tanggal()->where('tanggal_id', $this->tanggal_dipilih);
+
                 // ...
             }
 
