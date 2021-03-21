@@ -9,7 +9,7 @@ class Jadwal extends Model
 {
     use HasFactory;
 
-    protected $with = ['peziarah'];
+    // protected $with = ['peziarah'];
 
     protected $guarded = [];
 

@@ -27,7 +27,6 @@ class ZiarahForm extends Component
     private function dapatkanJadwal()
     {
         $jadwal = Jadwal::where('kuota', '<', '2')->get();
-
         if (count($jadwal) === 0) {
             $this->daftar_jadwal  = [
                 [
@@ -150,23 +149,29 @@ class ZiarahForm extends Component
         // validasi input
         $this->validate($aturan, $pesan);
 
-        $data['nama']           =   $this->nama;
-        $data['jenazah_id']     =   $this->jenazah_id;
-        $data['jenis_kelamin']  =   $this->jenis_kelamin;
-        $data['jadwal_id']      =   $this->jadwal;
-        $data['email']          =   $this->email;
-        $data['no_hp']          =   $this->no_hp;
-
         try {
+
+            $jadwal_id  =   $this->jadwal;
+
+            $jadwal     =   Jadwal::find($jadwal_id);
+
+            if ($jadwal->peziarah->count() > 2)
+                throw new \Exception("Jadwal yang anda masukkan telah mencapai kuota yg telah ditentukan.");
+
+            $kuota  = $jadwal->kuota;
+
+            $data['nama']           =   $this->nama;
+            $data['jenazah_id']     =   $this->jenazah_id;
+            $data['jenis_kelamin']  =   $this->jenis_kelamin;
+            $data['jadwal_id']      =   $this->jadwal;
+            $data['email']          =   $this->email;
+            $data['no_hp']          =   $this->no_hp;
+
             $jenazah = Jenazah::find($this->jenazah_id);
 
             $result = $jenazah->peziarah()->create($data);
 
             if (!$result) throw new \Exception("Gagal menambahkan peziarah.");
-
-            $jadwal     =   Jadwal::find($this->jadwal);
-
-            $kuota  = $jadwal->kuota;
 
             $jadwal->update([
                 'kuota' =>  $kuota + 1,

@@ -96,13 +96,14 @@
                     <label class="label">Jadwal Ziarah*</label>
                     <div class="select-wrapper"
                         style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
-                        <select class="select" wire:model="jadwal">
-                            <option selected="selected">Pilih jadwal</option>
-                            @foreach ($daftar_jadwal as $jadwal)
-                            @if ($jadwal['id'] === null)
-                            <option disabled>{{$jadwal['jadwal']}}</option>
+                        <select class="select" wire:model.defer="jadwal">
+                            <option selected="selected" wire:click="$set('daftar_jadwal', [])">Pilih jadwal</option>
+                            @foreach ($daftar_jadwal as $_jadwal)
+                            @if ($_jadwal['id'] === null)
+                            <option disabled>{{$_jadwal['jadwal']}}</option>
                             @else
-                            <option value="{{$jadwal['id']}}">{{$jadwal['jadwal']}}</option>
+                            <option @if( $jadwal===$_jadwal['id']) selected @endif value="{{ $_jadwal['id'] }}">
+                                {{$_jadwal['jadwal']}}</option>
                             @endif
                             @endforeach
                         </select>
@@ -113,7 +114,11 @@
                 </div>
 
                 <div class="p-t-15">
-                    <button class="btn btn--radius-2 btn--blue" type="submit" wire:click="simpan">Submit</button>
+                    <button class="btn btn--radius-2 btn--blue" type="submit" wire:target='simpan'
+                        wire:loading.attr='disabled' wire:click="simpan">
+                        <span wire:target='simpan' wire:loading.attr='hidden'>Submit</span>
+                        <span class="d-none" wire:target='simpan' wire:loading.class.remove='d-none'>Submit</span>
+                    </button>
                 </div>
             </div>
         </div>
