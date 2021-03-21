@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\dataJenazahController;
+use App\Http\Controllers\tokenController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\ZiarahForm;
 use App\Imports\JenazahImport;
 use App\Models\Jenazah;
@@ -74,3 +76,12 @@ Route::post('/data-jenazah/{id}/edit',[dataJenazahController::class, 'edit']);
 
 //Hapus Jenazah
 Route::get('/data-jenazah/{id}/hapus',[dataJenazahController::class, 'hapus']);
+
+//Token
+Route::get('/token',[tokenController::class, 'index']
+)->name('token');
+
+//Edit Token
+Route::get('/token/{id}/ubah',[tokenController::class, 'ubah']
+)->name('editToken');
+Route::post('/token/{id}/edit',[tokenController::class, 'edit']);

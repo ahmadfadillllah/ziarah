@@ -9,7 +9,7 @@ class dataJenazahController extends Controller
 {
     public function index()
     {
-        $data_jenazah = \App\Models\dataJenazah::all();
+        $data_jenazah = \App\Models\dataJenazah::paginate(5);
         return view('layouts.admin.data-jenazah',['data_jenazah' => $data_jenazah]);
     }
 
