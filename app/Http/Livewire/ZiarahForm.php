@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\{Jadwal, Jenazah, Peziarah};
+use App\Models\{Jadwal, Jenazah, Peziarah, TanggalZiarah, WaktuZiarah};
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class ZiarahForm extends Component
 {
-    public $daftar_jadwal = [];
+    public $waktu_ziarah = [];
 
-    public $nama, $jenis_kelamin, $email, $no_hp, $jadwal;
+    public $waktu_dipilih, $tanggal;
+
+    public $nama, $jenis_kelamin, $email, $no_hp;
 
     public $jenazah_id, $namaJenazah, $alamat_jenazah;
 
@@ -19,6 +21,15 @@ class ZiarahForm extends Component
     public function mount()
     {
         $this->dapatkanJadwal();
+        $this->dapatkanTanggal();
+    }
+
+    private function dapatkanTanggal()
+    {
+
+        return TanggalZiarah::get();
+
+        // ...
     }
 
     /**
@@ -26,16 +37,16 @@ class ZiarahForm extends Component
      */
     private function dapatkanJadwal()
     {
-        $jadwal = Jadwal::where('kuota', '<', '2')->get();
-        if (count($jadwal) === 0) {
-            $this->daftar_jadwal  = [
+        $waktu_ziarah = WaktuZiarah::get();
+        if (count($waktu_ziarah) === 0) {
+            $this->waktu_ziarah  = [
                 [
                     'id'        =>  null,
-                    'jadwal'    =>  "Jadwal tidak tersedia, coba lagi besok."
+                    'waktu'    =>  "Jadwal tidak tersedia, coba lagi besok."
                 ]
             ];
         } else {
-            $this->daftar_jadwal = $jadwal;
+            $this->waktu_ziarah = $waktu_ziarah;
         }
     }
 
@@ -151,7 +162,7 @@ class ZiarahForm extends Component
 
         try {
 
-            $jadwal_id  =   $this->jadwal;
+            $jadwal_id  =   $this->waktu_dipilih;
 
             $jadwal     =   Jadwal::find($jadwal_id);
 

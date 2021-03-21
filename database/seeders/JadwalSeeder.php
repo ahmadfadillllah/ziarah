@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Jadwal;
+use App\Models\TanggalZiarah;
+use App\Models\WaktuZiarah;
 use Illuminate\Database\Seeder;
 
 class JadwalSeeder extends Seeder
@@ -15,44 +17,88 @@ class JadwalSeeder extends Seeder
     public function run()
     {
 
-        $jadwal = [
+        $jam_peziarah = [
             [
-                'jadwal' => '09.30 - 10.00 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '09.30',
+                'sampai'    =>  '10.00',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '10.00 - 10.30 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '10.00',
+                'sampai'    =>  '10.30',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '10.30 - 11.00 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '10.30',
+                'sampai'    =>  '11.00',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '11.00 - 11.30 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '11.00',
+                'sampai'    =>  '11.30',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '15.30 - 16.00 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '11.00',
+                'sampai'    =>  '11.30',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '16.00 - 16.30 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '15.30',
+                'sampai'    =>  '16.00',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '16.30 - 17.00 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '16.00',
+                'sampai'    =>  '16.30',
+                'tipe'      =>  'WITA',
             ],
             [
-                'jadwal' => '17.00 - 17.30 WITA',
-                'kuota' =>  0,
+                'dari'      =>  '16.30',
+                'sampai'    =>  '17.00',
+                'tipe'      =>  'WITA',
+            ],
+            [
+                'dari'      =>  '17.00',
+                'sampai'    =>  '17.30',
+                'tipe'      =>  'WITA',
             ],
         ];
 
-        foreach ($jadwal as $j) {
-            Jadwal::create($j);
+        foreach ($jam_peziarah as $jam) {
+
+            WaktuZiarah::create($jam);
+
+            // ...
         }
+
+        $bulan = date('m', time());
+        $tahun = date('Y', time());
+
+        $jumlah_hari_dalam_sebulah = cal_days_in_month(CAL_GREGORIAN, intval($bulan), intval($tahun));
+
+        $hari_ini = date('d', time());
+
+        for ($i = 1; $i <= 12; $i++) {
+
+            if ($i < intval($bulan)) continue;
+
+            for ($index = 1; $index <= $jumlah_hari_dalam_sebulah; $index++) {
+
+                if ($index < intval($hari_ini)) continue;
+
+                TanggalZiarah::create([
+                    'tanggal'   =>  $index,
+                    'bulan'     =>  $i,
+                    'tahun'     =>  $tahun,
+                ]);
+
+                // ...
+            }
+
+            // ...
+        }
+
 
         // ...
     }

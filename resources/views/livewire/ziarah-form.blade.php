@@ -93,17 +93,36 @@
                 </div>
 
                 <div class="container">
+                    <label class="label">Tanggal ziarah*</label>
+                    <div class="select-wrapper"
+                        style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
+                        <select class="select" wire:model.defer="tanggal">
+                            <option selected="selected" wire:click="$set('daftar_jadwal', [])">Pilih Tanggal</option>
+                            @foreach ($tanggal as $_tanggal)
+                            <option @if( $tanggal===$_tanggal['id']) selected @endif value="{{ $_tanggal['id'] }}">
+                                {{$_tanggal['tanngal']}} - {{$_tanggal['bulan']}} - {{$_tanggal['tahun']}}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('jadwal')
+                    <small style="color: #ff6565">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="container" style="margin-top: 5px">
                     <label class="label">Jadwal Ziarah*</label>
                     <div class="select-wrapper"
                         style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
                         <select class="select" wire:model.defer="jadwal">
-                            <option selected="selected" wire:click="$set('daftar_jadwal', [])">Pilih jadwal</option>
-                            @foreach ($daftar_jadwal as $_jadwal)
-                            @if ($_jadwal['id'] === null)
-                            <option disabled>{{$_jadwal['jadwal']}}</option>
+                            <option selected="selected" wire:click="$set('waktu_ziarah', [])">Pilih Jam</option>
+                            @foreach ($waktu_ziarah as $waktu)
+                            @if ($waktu['id'] === null)
+                            <option disabled>{{$waktu['jadwal']}}</option>
                             @else
-                            <option @if( $jadwal===$_jadwal['id']) selected @endif value="{{ $_jadwal['id'] }}">
-                                {{$_jadwal['jadwal']}}</option>
+                            <option @if( $jadwal===$waktu['id']) selected @endif value="{{ $waktu['id'] }}">
+                                {{$waktu['jadwal']}}
+                            </option>
                             @endif
                             @endforeach
                         </select>
