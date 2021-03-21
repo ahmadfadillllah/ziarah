@@ -7,20 +7,19 @@ use Illuminate\Http\Request;
 
 class dataJenazahController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data_jenazah = \App\Models\dataJenazah::paginate(5);
+        if($request->has('cari')){
+            $data_jenazah = \App\Models\dataJenazah::where('nama', 'LIKE', '%' .$request->cari. '%')->paginate(5);
+        }
+        else{
+            $data_jenazah = \App\Models\dataJenazah::paginate(5);
+        }
         return view('layouts.admin.data-jenazah',['data_jenazah' => $data_jenazah]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        if($request->has('cari')){
-            $data_jenazah = \App\Models\dataJenazah::where('nama', 'LIKE', '%' .$request->cari. '%')->get();
-        }
-        else{
-            $data_jenazah = \App\Models\dataJenazah::all();
-        }
         return view('layouts.admin.jenazah.tambah');
     }
 
