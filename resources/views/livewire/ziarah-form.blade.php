@@ -114,10 +114,10 @@
                 </div>
 
                 <div class="p-t-15">
-                    <button class="btn btn--radius-2 btn--blue" type="submit" wire:target='simpan'
-                        wire:loading.attr='disabled' wire:click="simpan">
-                        <span wire:target='simpan' wire:loading.attr='hidden'>Submit</span>
-                        <span class="d-none" wire:target='simpan' wire:loading.class.remove='d-none'>Submit</span>
+                    <button class="btn btn--radius-2 btn--blue" type="submit" wire:click="simpan" wire:target='simpan'
+                        wire:loading.attr='disabled' wire:loading.class='btn-disabled'>
+                        <span wire:target='simpan' wire:loading.class='d-none'>Submit</span>
+                        <span class="d-none" wire:target='simpan' wire:loading.class.remove='d-none'>Mengirim</span>
                     </button>
                 </div>
             </div>

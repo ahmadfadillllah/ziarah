@@ -104,6 +104,11 @@
         .select::-ms-expand {
             display: none;
         }
+
+        .btn-disabled{
+            cursor: wait;
+            background: #c5c5c5 !important;
+        }
     </style>
 
     @livewireStyles
