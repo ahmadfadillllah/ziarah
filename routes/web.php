@@ -6,6 +6,8 @@ use App\Models\Jenazah;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
+ini_set('max_execution_time', 300 * 2);
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +41,9 @@ Route::get('/import', function () {
                 'tgl_lahir' => $jenazah[2],
                 'tgl_wafat' => $jenazah[3],
                 'alamat' => $jenazah[5],
+                'agama'   =>  $jenazah[4],
+                'rumah_sakit'   =>  $jenazah[8],
+                'tpk'   =>  $jenazah[9]
             ]);
 
             // ...

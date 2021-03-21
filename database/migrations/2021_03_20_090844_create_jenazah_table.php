@@ -18,6 +18,9 @@ class CreateJenazahTable extends Migration
             $table->string('nama', 200);
             $table->string('alamat', 200)->nullable();
             $table->string('blok')->nullable();
+            $table->string('agama')->nullable();
+            $table->string('rumah_sakit')->nullable();
+            $table->string('tpk')->nullable();
             $table->string('tgl_lahir', 120)->nullable();
             $table->string('tgl_wafat', 120)->nullable();
             $table->timestamps();

@@ -96,16 +96,25 @@
                     <label class="label">Tanggal ziarah*</label>
                     <div class="select-wrapper"
                         style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
-                        <select class="select" wire:model.defer="tanggal">
+                        <select class="select" wire:model.defer="tanggal_dipilih">
                             <option selected="selected" wire:click="$set('daftar_jadwal', [])">Pilih Tanggal</option>
-                            @foreach ($tanggal as $_tanggal)
-                            <option @if( $tanggal===$_tanggal['id']) selected @endif value="{{ $_tanggal['id'] }}">
-                                {{$_tanggal['tanngal']}} - {{$_tanggal['bulan']}} - {{$_tanggal['tahun']}}
+
+                            @foreach ($tanggal_ziarah as $_tanggal)
+                            @if ($_tanggal['id'] === null)
+                            <option disabled>
+                                {{$_tanggal['pesan']}}
                             </option>
+                            @else
+                            <option @if( $tanggal_dipilih===$_tanggal['id']) selected @endif
+                                value="{{ $_tanggal['id'] }}">
+                                {{$_tanggal['tanggal']}} - {{$_tanggal['bulan']}} - {{$_tanggal['tahun']}}
+                            </option>
+                            @endif
                             @endforeach
+
                         </select>
                     </div>
-                    @error('jadwal')
+                    @error('tanggal_dipilih')
                     <small style="color: #ff6565">{{ $message }}</small>
                     @enderror
                 </div>
@@ -114,20 +123,22 @@
                     <label class="label">Jadwal Ziarah*</label>
                     <div class="select-wrapper"
                         style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
-                        <select class="select" wire:model.defer="jadwal">
+                        <select class="select" wire:model.defer="waktu_dipilih">
                             <option selected="selected" wire:click="$set('waktu_ziarah', [])">Pilih Jam</option>
                             @foreach ($waktu_ziarah as $waktu)
                             @if ($waktu['id'] === null)
-                            <option disabled>{{$waktu['jadwal']}}</option>
+                            <option disabled>{{$waktu['pesan']}}</option>
                             @else
-                            <option @if( $jadwal===$waktu['id']) selected @endif value="{{ $waktu['id'] }}">
-                                {{$waktu['jadwal']}}
+                            <option @if( $waktu_dipilih===$waktu['id']) selected @endif value="{{ $waktu['id'] }}">
+
+                                {{$waktu['dari']}} - {{$waktu['sampai']}} : {{$waktu['tipe']}}
+
                             </option>
                             @endif
                             @endforeach
                         </select>
                     </div>
-                    @error('jadwal')
+                    @error('waktu_dipilih')
                     <small style="color: #ff6565">{{ $message }}</small>
                     @enderror
                 </div>

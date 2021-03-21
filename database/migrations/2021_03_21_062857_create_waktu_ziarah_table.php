@@ -15,8 +15,8 @@ class CreateWaktuZiarahTable extends Migration
     {
         Schema::create('waktu_ziarah', function (Blueprint $table) {
             $table->id();
-            $table->string('dari', 100)->unique();
-            $table->string('sampai', 100)->unique();;
+            $table->string('dari', 100);
+            $table->string('sampai', 100);
             $table->string('tipe', 50);
             $table->timestamps();
         });

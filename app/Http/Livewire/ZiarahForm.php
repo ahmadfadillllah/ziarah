@@ -8,13 +8,12 @@ use Livewire\Component;
 
 class ZiarahForm extends Component
 {
-    public $waktu_ziarah = [];
-
-    public $waktu_dipilih, $tanggal;
 
     public $nama, $jenis_kelamin, $email, $no_hp;
 
     public $jenazah_id, $namaJenazah, $alamat_jenazah;
+
+    public $tanggal_dipilih, $waktu_dipilih;
 
     public $suggestion_name = [];
 
@@ -27,7 +26,18 @@ class ZiarahForm extends Component
     private function dapatkanTanggal()
     {
 
-        return TanggalZiarah::get();
+        $tanggal_ziarah = TanggalZiarah::where('aktif', '=', 1)->get();
+
+        if (count($tanggal_ziarah) === 0) {
+            return [
+                [
+                    'id'        =>  null,
+                    'pesan'     =>  "Jadwal tidak tersedia"
+                ]
+            ];
+        }
+
+        return $tanggal_ziarah;
 
         // ...
     }
@@ -38,16 +48,19 @@ class ZiarahForm extends Component
     private function dapatkanJadwal()
     {
         $waktu_ziarah = WaktuZiarah::get();
+
         if (count($waktu_ziarah) === 0) {
-            $this->waktu_ziarah  = [
+            return [
                 [
                     'id'        =>  null,
-                    'waktu'    =>  "Jadwal tidak tersedia, coba lagi besok."
+                    'pesan'    =>  "Jadwal tidak tersedia"
                 ]
             ];
-        } else {
-            $this->waktu_ziarah = $waktu_ziarah;
         }
+
+        return  $waktu_ziarah;
+
+        // ...
     }
 
     public function updatedNamaJenazah($k, $v)
@@ -57,7 +70,10 @@ class ZiarahForm extends Component
 
     public function render()
     {
-        $view = (object) view('livewire.ziarah-form');
+        $data['waktu_ziarah']   =   $this->dapatkanJadwal();
+        $data['tanggal_ziarah'] =   $this->dapatkanTanggal();
+
+        $view = (object) view('livewire.ziarah-form', $data);
         return $view->extends('layouts.form.dashboard')->section('content');
     }
 
@@ -123,7 +139,8 @@ class ZiarahForm extends Component
             'nama'          =>  ['required', 'min:2', 'max:150'],
             'namaJenazah'   =>  ['required'],
             'email'         =>  ['required', 'email', 'unique:peziarah,email'],
-            'jadwal'        =>  ['required'],
+            'tanggal_dipilih' =>  ['required'],
+            'waktu_dipilih' =>  ['required'],
             'jenis_kelamin' =>  ['required'],
             'no_hp'         =>  ['required', 'numeric', 'unique:peziarah,no_hp'],
         ];
@@ -145,10 +162,11 @@ class ZiarahForm extends Component
             'email.unique'      => "Email ini telah terdaftar!, silahkan masukkan email baru.",
 
             // Field jadwal
-            'jadwal.required'   => 'Harap masukkan jadwal.',
+            'tanggal_dipilih.required'   => 'Harap masukkan tanggal ziarah.',
+            'waktu_dipilih.required'     => 'Silahkan memilih waktu ziarah.',
 
             // Field jenis kelamin
-            'jenis_kelamin.required' =>  "Silahkan masukkan jenis kelamin dari pezirah.",
+            'jenis_kelamin.required' =>  "Silahkan masukkan jenis kelamin dari peziarah.",
 
             // Field no hp
             'no_hp.required'    => 'Silahkan masukkan no whatsapp yang aktif.',
@@ -161,7 +179,6 @@ class ZiarahForm extends Component
         $this->validate($aturan, $pesan);
 
         try {
-
             $jadwal_id  =   $this->waktu_dipilih;
 
             $jadwal     =   Jadwal::find($jadwal_id);
@@ -174,7 +191,7 @@ class ZiarahForm extends Component
             $data['nama']           =   $this->nama;
             $data['jenazah_id']     =   $this->jenazah_id;
             $data['jenis_kelamin']  =   $this->jenis_kelamin;
-            $data['jadwal_id']      =   $this->jadwal;
+            $data['jadwal_id']      =   $jadwal_id;
             $data['email']          =   $this->email;
             $data['no_hp']          =   $this->no_hp;
 
@@ -195,7 +212,7 @@ class ZiarahForm extends Component
                 'jenazah_id',
                 'jenis_kelamin',
                 'alamat_jenazah',
-                'jadwal',
+                'waktu_dipilih',
                 'email',
                 'no_hp',
             );
@@ -206,7 +223,8 @@ class ZiarahForm extends Component
                 'type'    =>    'success',
                 'title'   =>    "Berhasil mendaftarkan peziarah!",
                 'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
-                                anda melalui email atau whatsapp yang telah anda masukkan",
+                                anda melalui email atau whatsapp yang telah anda
+                                masukkan & harapa mematuhi protokol kesehatan.",
             ]);
 
             // ...
