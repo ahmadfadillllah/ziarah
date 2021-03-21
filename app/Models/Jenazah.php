@@ -13,8 +13,6 @@ class Jenazah extends Model
 
     protected $table = "jenazah";
 
-    // protected $with = ['peziarah'];
-
     public function peziarah()
     {
         return $this->hasMany(Peziarah::class);

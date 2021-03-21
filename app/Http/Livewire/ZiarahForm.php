@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class ZiarahForm extends Component
 {
-
     public $nama, $jenis_kelamin, $email, $no_hp;
 
     public $jenazah_id, $namaJenazah, $alamat_jenazah;
@@ -219,6 +218,10 @@ class ZiarahForm extends Component
                 $peziarah->waktu_ziarah()->attach($this->waktu_dipilih, [
                     'tanggal_id' => $this->tanggal_dipilih,
                 ]);
+
+                $waktu_ziarah = WaktuZiarah::find($this->waktu_dipilih);
+
+                // ...
             }
 
             if (!$peziarah) throw new \Exception("Gagal menambahkan peziarah.");
@@ -242,7 +245,7 @@ class ZiarahForm extends Component
                 'title'   =>    "Berhasil mendaftarkan peziarah!",
                 'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
                                 anda melalui email atau whatsapp yang telah anda
-                                masukkan & harapa mematuhi protokol kesehatan.",
+                                masukkan & harap mematuhi protokol kesehatan.",
             ]);
 
             // ...

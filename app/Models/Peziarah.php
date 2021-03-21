@@ -13,11 +13,14 @@ class Peziarah extends Model
 
     protected $table = 'peziarah';
 
-    protected $with = ['waktu_ziarah', 'tanggal_ziarah'];
-
     public function jenazah()
     {
         return $this->belongsTo(Jenazah::class);
+    }
+
+    public static function getBookingModel(): string
+    {
+        return Jenazah::class;
     }
 
     public function waktu_ziarah()
