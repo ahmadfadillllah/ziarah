@@ -13,7 +13,7 @@ class Jenazah extends Model
 
     protected $table = "jenazah";
 
-    protected $with = ['peziarah'];
+    // protected $with = ['peziarah'];
 
     public function peziarah()
     {
