@@ -15,15 +15,22 @@
                         </ol>
                     </nav>
                 </div>
+
                 <div class="col-lg-6 col-5 text-right">
-                    <a href="#" class="btn btn-sm btn-neutral">New</a>
-                    <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+                    <a href="{{ route('tambahJenazah') }}" class="btn btn-sm btn-neutral">Tambah Jenazah</a>
                 </div>
             </div>
+            @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                <strong>Success!</strong> {{ session('success') }}
+            </div>
+            @endif
         </div>
     </div>
 </div>
 <!-- Page content -->
+
+
 <div class="container-fluid mt--6">
     <div class="row">
         <div class="col">
@@ -31,7 +38,23 @@
                 <!-- Card header -->
                 <div class="card-header border-0">
                     <h3 class="mb-0">List Jenazah</h3>
+                    <br>
+                    <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET" action="/data-jenazah">
+                        <div class="form-group mb-0">
+                            <div class="input-group input-group-alternative input-group-merge">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                                <input name="cari" class="form-control" placeholder="Search" type="text">
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
+                            aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </form>
                 </div>
+
                 <!-- Light table -->
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
@@ -48,38 +71,39 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            @foreach ($data_jenazah as $jenazah)
                             <tr>
                                 <th scope="row">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Argon Design System</span>
-                                        </div>
+                                    <div class="media-body">
+                                        <span class="name mb-0 text-sm">{{ $jenazah->blok }}</span>
+                                    </div>
                                 </th>
                                 <td class="budget">
-                                    $2500 USD
+                                    {{ $jenazah->nama }}
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
+                                        <span class="status">{{ $jenazah->tgl_lahir }}</span>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
+                                        <span class="status">{{ $jenazah->tgl_wafat }}</span>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
+                                        <span class="status">{{ $jenazah->agama }}</span>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
+                                        <span class="status">{{ $jenazah->alamat }}</span>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
+                                        <span class="status">{{ $jenazah->rumah_sakit }}</span>
                                     </span>
                                 </td>
                                 <td class="text-right">
@@ -89,12 +113,13 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
+                                            <a class="dropdown-item" href="/data-jenazah/{{ $jenazah->id }}/ubah">Edit</a>
+                                            <a class="dropdown-item" href="/data-jenazah/{{ $jenazah->id }}/hapus" onclick="return confirm('Yakin ingin menghapus?')">Delete</a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

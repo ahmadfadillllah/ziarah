@@ -43,7 +43,7 @@ class ZiarahForm extends Component
     public function render()
     {
         return view('livewire.ziarah-form')
-            ->extends('layouts.form.dashboard')->section('content');
+        ->extends('layouts.form.dashboard')->section('content');
     }
 
     public function cariJenazah()
