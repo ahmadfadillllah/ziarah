@@ -31,7 +31,7 @@
 
             <div class="mt-4">
                 <x-jet-label for="token" value="{{ __('Token') }}" />
-                <x-jet-input id="token" class="block mt-1 w-full" type="text" name="token" />
+                <x-jet-input id="token" class="block mt-1 w-full" type="text" name="token" required />
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

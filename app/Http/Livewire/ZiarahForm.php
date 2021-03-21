@@ -95,10 +95,15 @@ class ZiarahForm extends Component
 
     public function render()
     {
+<<<<<<< HEAD
         $data['tanggal_ziarah'] =   $this->dapatkanTanggal();
 
         $view = (object) view('livewire.ziarah-form', $data);
         return $view->extends('layouts.form.dashboard')->section('content');
+=======
+        return view('livewire.ziarah-form')
+        ->extends('layouts.form.dashboard')->section('content');
+>>>>>>> faeec56b159b91b158f92de6030746380208bd18
     }
 
     /**
