@@ -6,7 +6,7 @@ use App\Models\Jenazah;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
-ini_set('max_execution_time', 300 * 2);
+ini_set('max_execution_time', 150 * 2);
 
 /*
 |--------------------------------------------------------------------------

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJadwalTable extends Migration
+class CreateTanggalHasWaktuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateJadwalTable extends Migration
      */
     public function up()
     {
-        Schema::create('jadwal', function (Blueprint $table) {
+        Schema::create('tanggal_has_waktu', function (Blueprint $table) {
             $table->id();
-            $table->string('kuota');
-            $table->string('jadwal');
-            $table->string('max_kuota')->default('2');
+
+            $table->foreignId('tanggal_id');
+            $table->foreignId('waktu_id');
+
+            $table->foreign('tanggal_id')->on('tanggal_ziarah')->references('id');
+            $table->foreign('waktu_id')->on('waktu_ziarah')->references('id');
+
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ class CreateJadwalTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwal');
+        Schema::dropIfExists('tanggal_has_waktu');
     }
 }

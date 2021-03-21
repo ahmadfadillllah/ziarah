@@ -13,17 +13,25 @@ class Peziarah extends Model
 
     protected $table = 'peziarah';
 
-    protected $with = ['jadwal'];
+    protected $with = ['waktu_ziarah', 'tanggal_ziarah'];
 
     public function jenazah()
     {
         return $this->belongsTo(Jenazah::class);
     }
 
-    public function jadwal()
+    public function waktu_ziarah()
     {
-        return $this->belongsTo(Jadwal::class, 'jadwal_id');
+        return $this->belongsToMany(WaktuZiarah::class, 'peziarah_has_jadwal', 'peziarah_id', 'waktu_id')
+            ->withPivot('tanggal_id')->withTimestamps();
     }
+
+    public function tanggal_ziarah()
+    {
+        return $this->belongsToMany(TanggalZiarah::class, 'peziarah_has_jadwal', 'peziarah_id', 'tanggal_id')
+            ->withPivot('waktu_id')->withTimestamps();
+    }
+
 
     // ...
 }

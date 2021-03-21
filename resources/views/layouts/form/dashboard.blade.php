@@ -10,6 +10,7 @@
     <!-- Title Page-->
     <title>Form Pendaftaran</title>
 
+
     <!-- Icons font CSS-->
     <link href="{{ asset('form/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet"
         media="all">

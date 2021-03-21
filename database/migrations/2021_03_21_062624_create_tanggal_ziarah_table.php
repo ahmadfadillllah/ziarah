@@ -19,6 +19,8 @@ class CreateTanggalZiarahTable extends Migration
             $table->string('bulan', 100);
             $table->string('tahun', 100);
             $table->boolean('aktif')->default(1);
+            $table->integer('kouta_terpakai')->default(0);
+            $table->integer('max_kouta')->default(18);
             $table->timestamps();
         });
     }

@@ -60,14 +60,14 @@
                 <div class="row row-space">
                     <div class="col-2">
 
-                        <div class="input-group">
+                        <div class="input-group" x-data="{isOpen: false}">
                             <label class="label">Nama Jenazah*</label>
-                            <input class="input--style-4" type="text" wire:model.debounce.100ms="namaJenazah">
+                            <input class="input--style-4" type="text" wire:model="namaJenazah"
+                                x-on:input="isOpen = true">
                             @error('namaJenazah')
                             <small style="color: #ff6565">{{ $message }}</small>
                             @enderror
-                            @if (count($suggestion_name) >= 1)
-                            <div class="suggestion-box">
+                            <div class="suggestion-box" x-show="isOpen" x-on:click.away="isOpen = false">
                                 @foreach ($suggestion_name as $data)
                                 <button type="button" class="sugg-item"
                                     wire:click="dapatkanDataLenkap('{{ Crypt::encrypt($data['id']) }}')">
@@ -78,7 +78,6 @@
                                 </button>
                                 @endforeach
                             </div>
-                            @endif
                         </div>
 
                     </div>
@@ -96,7 +95,7 @@
                     <label class="label">Tanggal ziarah*</label>
                     <div class="select-wrapper"
                         style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
-                        <select class="select" wire:model.defer="tanggal_dipilih">
+                        <select class="select" wire:model="tanggal_dipilih">
                             <option selected="selected" wire:click="$set('daftar_jadwal', [])">Pilih Tanggal</option>
 
                             @foreach ($tanggal_ziarah as $_tanggal)
@@ -106,8 +105,10 @@
                             </option>
                             @else
                             <option @if( $tanggal_dipilih===$_tanggal['id']) selected @endif
-                                value="{{ $_tanggal['id'] }}">
-                                {{$_tanggal['tanggal']}} - {{$_tanggal['bulan']}} - {{$_tanggal['tahun']}}
+                                value="{{ $_tanggal['id'] }}" class="text-align: justify">
+                                {{$_tanggal['tanggal']}} -
+                                {{ date('F',strtotime("01-".$_tanggal['bulan']."-".date("Y")))}} -
+                                {{$_tanggal['tahun']}}
                             </option>
                             @endif
                             @endforeach
@@ -130,9 +131,7 @@
                             <option disabled>{{$waktu['pesan']}}</option>
                             @else
                             <option @if( $waktu_dipilih===$waktu['id']) selected @endif value="{{ $waktu['id'] }}">
-
                                 {{$waktu['dari']}} - {{$waktu['sampai']}} : {{$waktu['tipe']}}
-
                             </option>
                             @endif
                             @endforeach

@@ -13,5 +13,11 @@ class TanggalZiarah extends Model
 
     protected $table = "tanggal_ziarah";
 
+    public function waktu()
+    {
+        return $this->belongsToMany(WaktuZiarah::class, 'tanggal_has_waktu', 'tanggal_id', 'waktu_id')->withTimestamps();
+        // ...
+    }
+
     // ...
 }

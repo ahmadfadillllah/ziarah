@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\{Jadwal, Jenazah, Peziarah, TanggalZiarah, WaktuZiarah};
+use App\Models\{Jenazah, Peziarah, TanggalZiarah, WaktuZiarah};
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
@@ -16,6 +16,13 @@ class ZiarahForm extends Component
     public $tanggal_dipilih, $waktu_dipilih;
 
     public $suggestion_name = [];
+
+    public $waktu_ziarah = [
+        [
+            'id'        =>  null,
+            'pesan'    =>  "Silahkan masukkan tanggal ziarah terlebih dahulu."
+        ]
+    ];
 
     public function mount()
     {
@@ -63,6 +70,25 @@ class ZiarahForm extends Component
         // ...
     }
 
+    public function updatedTanggalDipilih($k, $v)
+    {
+        try {
+            $tanggal = TanggalZiarah::find($this->tanggal_dipilih);
+            $this->waktu_ziarah = $tanggal->waktu;
+
+            // ...
+        } catch (\Exception $e) {
+
+            $this->waktu_ziarah = [
+                [
+                    'id'        =>  null,
+                    'pesan'    =>  "Silahkan masukkan tanggal ziarah terlebih dahulu."
+                ]
+            ];
+            // ...
+        }
+    }
+
     public function updatedNamaJenazah($k, $v)
     {
         $this->cariJenazah();
@@ -70,7 +96,6 @@ class ZiarahForm extends Component
 
     public function render()
     {
-        $data['waktu_ziarah']   =   $this->dapatkanJadwal();
         $data['tanggal_ziarah'] =   $this->dapatkanTanggal();
 
         $view = (object) view('livewire.ziarah-form', $data);
@@ -179,31 +204,24 @@ class ZiarahForm extends Component
         $this->validate($aturan, $pesan);
 
         try {
-            $jadwal_id  =   $this->waktu_dipilih;
-
-            $jadwal     =   Jadwal::find($jadwal_id);
-
-            if ($jadwal->peziarah->count() > 2)
-                throw new \Exception("Jadwal yang anda masukkan telah mencapai kuota yg telah ditentukan.");
-
-            $kuota  = $jadwal->kuota;
 
             $data['nama']           =   $this->nama;
             $data['jenazah_id']     =   $this->jenazah_id;
             $data['jenis_kelamin']  =   $this->jenis_kelamin;
-            $data['jadwal_id']      =   $jadwal_id;
             $data['email']          =   $this->email;
             $data['no_hp']          =   $this->no_hp;
 
             $jenazah = Jenazah::find($this->jenazah_id);
 
-            $result = $jenazah->peziarah()->create($data);
+            $peziarah = $jenazah->peziarah()->create($data);
 
-            if (!$result) throw new \Exception("Gagal menambahkan peziarah.");
+            if ($peziarah instanceof Peziarah) {
+                $peziarah->waktu_ziarah()->attach($this->waktu_dipilih, [
+                    'tanggal_id' => $this->tanggal_dipilih,
+                ]);
+            }
 
-            $jadwal->update([
-                'kuota' =>  $kuota + 1,
-            ]);
+            if (!$peziarah) throw new \Exception("Gagal menambahkan peziarah.");
 
             // reset semua property user
             $this->reset(
