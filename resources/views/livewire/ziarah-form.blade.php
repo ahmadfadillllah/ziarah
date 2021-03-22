@@ -155,7 +155,7 @@
         </div>
     </div>
 
-    <hr>
+    <br><br>
     <center>
         &copy; 2021 <a href="http://ahmadfadillah.my.id" class="font-weight-bold ml-1" target="_blank">ahmadfadillllah</a>
         </center>
