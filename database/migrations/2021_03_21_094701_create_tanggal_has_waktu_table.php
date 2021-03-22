@@ -19,8 +19,8 @@ class CreateTanggalHasWaktuTable extends Migration
             $table->foreignId('waktu_id');
             $table->integer('kuota')->default(0);
 
-            $table->foreign('tanggal_id')->on('tanggal_ziarah')->references('id');
-            $table->foreign('waktu_id')->on('waktu_ziarah')->references('id');
+            $table->foreign('tanggal_id')->on('tanggal_ziarah')->references('id')->cascadeOnDelete();
+            $table->foreign('waktu_id')->on('waktu_ziarah')->references('id')->cascadeOnDelete();
 
             $table->timestamps();
         });

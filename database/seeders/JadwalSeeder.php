@@ -39,8 +39,8 @@ class JadwalSeeder extends Seeder
                 'tipe'      =>  'WITA',
             ],
             [
-                'dari'      =>  '11.00',
-                'sampai'    =>  '11.30',
+                'dari'      =>  '11.30',
+                'sampai'    =>  '12.00',
                 'tipe'      =>  'WITA',
             ],
             [
