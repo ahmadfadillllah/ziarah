@@ -112,8 +112,8 @@
         }
     </style>
 
-    <script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
-    <script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js" defer></script>
+    <script type="module" src="{{ asset('assets/alpinejs/dist/alpine.js') }}"></script>
+    <script nomodule src="{{ asset('assets/alpinejs/dist/alpine-ie11.js') }}" defer></script>
 
     @livewireStyles
     @livewireScripts

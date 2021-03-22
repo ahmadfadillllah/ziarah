@@ -50,7 +50,7 @@
 
                 <div class="input-group">
                     <label class="label">No. Handphone* (Whatsapp)</label>
-                    <input class="input--style-4" type="text" name="nohp" wire:model.defer="no_hp">
+                    <input class="input--style-4" type="text" required name="nohp" wire:model.defer="no_hp">
                     @error('no_hp')
                     <small style="color: #ff6565">{{ $message }}</small>
                     @enderror
@@ -62,12 +62,14 @@
 
                         <div class="input-group" x-data="{isOpen: false}">
                             <label class="label">Nama Jenazah*</label>
-                            <input class="input--style-4" type="text" wire:model="namaJenazah"
+                            <input class="input--style-4" type="text" wire:model.debounce.500ms="namaJenazah"
                                 x-on:input="isOpen = true">
                             @error('namaJenazah')
                             <small style="color: #ff6565">{{ $message }}</small>
                             @enderror
                             <div class="suggestion-box" x-show="isOpen" x-on:click.away="isOpen = false">
+                                {{-- <span class="d-none" wire:target='namaJenazah' wire:loading.class.remove='d-none'
+                                    style="text-align: center; display: inline-block; position: relative; width: 100%">memuat...</span> --}}
                                 @foreach ($suggestion_name as $data)
                                 <button type="button" class="sugg-item"
                                     wire:click="dapatkanDataLenkap('{{ Crypt::encrypt($data['id']) }}')">

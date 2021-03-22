@@ -18,6 +18,9 @@
 
                 <div class="col-lg-6 col-5 text-right">
                     <a href="{{ route('tambahJenazah') }}" class="btn btn-sm btn-neutral">Tambah Jenazah</a>
+                    <a href="{{ route('import-jenazah') }}"
+                        onclick="return confirm('Mengimport data baru berarti menghapus data lama, apakah anda ingin melanjutkan. note* waktu yang dibutuhkan untuk mengimport data munkin relative lama tergantung jumlah datanya.')"
+                        class="btn btn-sm btn-neutral">Import data jenazah</a>
                 </div>
             </div>
             @if (session('success'))
@@ -39,7 +42,8 @@
                 <div class="card-header border-0">
                     <h3 class="mb-0">List Jenazah</h3>
                     <br>
-                    <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET" action="/data-jenazah">
+                    <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main"
+                        method="GET" action="/data-jenazah">
                         <div class="form-group mb-0">
                             <div class="input-group input-group-alternative input-group-merge">
                                 <div class="input-group-prepend">
@@ -113,8 +117,10 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="/data-jenazah/{{ $jenazah->id }}/ubah">Edit</a>
-                                            <a class="dropdown-item" href="/data-jenazah/{{ $jenazah->id }}/hapus" onclick="return confirm('Yakin ingin menghapus?')">Delete</a>
+                                            <a class="dropdown-item"
+                                                href="/data-jenazah/{{ $jenazah->id }}/ubah">Edit</a>
+                                            <a class="dropdown-item" href="/data-jenazah/{{ $jenazah->id }}/hapus"
+                                                onclick="return confirm('Yakin ingin menghapus?')">Delete</a>
                                         </div>
                                     </div>
                                 </td>
@@ -126,7 +132,6 @@
                 <!-- Card footer -->
                 <div class="card-footer py-4">
                     {{ $data_jenazah->links('pagination::bootstrap-4') }}
-
                 </div>
             </div>
         </div>

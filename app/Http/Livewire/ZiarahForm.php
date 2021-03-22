@@ -16,17 +16,29 @@ class ZiarahForm extends Component
 
     public $suggestion_name = [];
 
-    public $waktu_ziarah = [
-        [
-            'id'        =>  null,
-            'pesan'    =>  "Silahkan masukkan tanggal ziarah terlebih dahulu."
-        ]
-    ];
+    public $waktu_ziarah = [];
 
     public function mount()
     {
         $this->dapatkanJadwal();
         $this->dapatkanTanggal();
+
+        $this->fakeData();
+
+        $this->resetWaktuZiarah("Masukkan tanggal terlebih dahulu");
+    }
+
+    private function fakeData()
+    {
+
+        $peziarah = Peziarah::factory()->make();
+
+        $this->nama     =   $peziarah->nama;
+        $this->email    =   $peziarah->email;
+        $this->jenis_kelamin    =   "pria";
+        $this->no_hp    =   $peziarah->no_hp;
+
+        // ...
     }
 
     private function dapatkanTanggal()
@@ -56,12 +68,7 @@ class ZiarahForm extends Component
         $waktu_ziarah = WaktuZiarah::get();
 
         if (count($waktu_ziarah) === 0) {
-            return [
-                [
-                    'id'        =>  null,
-                    'pesan'    =>  "Jadwal tidak tersedia"
-                ]
-            ];
+            return $this->resetWaktuZiarah();
         }
 
         return  $waktu_ziarah;
@@ -69,21 +76,34 @@ class ZiarahForm extends Component
         // ...
     }
 
+    private function resetWaktuZiarah($msg = "Jadwal tidak tersedia")
+    {
+        return $this->waktu_ziarah = [
+            [
+                'id'        =>  null,
+                'pesan'    =>  $msg
+            ]
+        ];
+    }
+
     public function updatedTanggalDipilih($k, $v)
     {
         try {
             $tanggal = TanggalZiarah::find($this->tanggal_dipilih);
-            $this->waktu_ziarah = $tanggal->waktu;
+
+            $waktu = $tanggal->waktu()->where('kuota', '<', 2)->get();
+
+            if (count($waktu) === 0) {
+                return $this->resetWaktuZiarah('Jadwal tidak tersediah, silahkan cari tanggal lain.');
+            }
+
+            return $this->waktu_ziarah = $waktu;
 
             // ...
         } catch (\Exception $e) {
 
-            $this->waktu_ziarah = [
-                [
-                    'id'        =>  null,
-                    'pesan'    =>  "Silahkan masukkan tanggal ziarah terlebih dahulu."
-                ]
-            ];
+            return $this->resetWaktuZiarah("Silahkan masukkan tanggal ziarah terlebih dahulu.");
+
             // ...
         }
     }
@@ -95,15 +115,10 @@ class ZiarahForm extends Component
 
     public function render()
     {
-<<<<<<< HEAD
         $data['tanggal_ziarah'] =   $this->dapatkanTanggal();
 
         $view = (object) view('livewire.ziarah-form', $data);
         return $view->extends('layouts.form.dashboard')->section('content');
-=======
-        return view('livewire.ziarah-form')
-        ->extends('layouts.form.dashboard')->section('content');
->>>>>>> faeec56b159b91b158f92de6030746380208bd18
     }
 
     /**
@@ -209,13 +224,17 @@ class ZiarahForm extends Component
 
         try {
 
+            $jenazah = Jenazah::find($this->jenazah_id);
+
+            if (($jenazah instanceof Jenazah) === false) {
+                throw new \Exception("Nama jenazah tidak ditemukan.");
+            }
+
             $data['nama']           =   $this->nama;
             $data['jenazah_id']     =   $this->jenazah_id;
             $data['jenis_kelamin']  =   $this->jenis_kelamin;
             $data['email']          =   $this->email;
             $data['no_hp']          =   $this->no_hp;
-
-            $jenazah = Jenazah::find($this->jenazah_id);
 
             $peziarah = $jenazah->peziarah()->create($data);
 
@@ -224,9 +243,15 @@ class ZiarahForm extends Component
                     'tanggal_id' => $this->tanggal_dipilih,
                 ]);
 
-                $waktu_ziarah = WaktuZiarah::find($this->waktu_dipilih);
+                $tanggal_dipilih    =   TanggalZiarah::find($this->tanggal_dipilih);
 
-                $waktu_ziarah->tanggal()->where('tanggal_id', $this->tanggal_dipilih);
+                $que_builder      =   $tanggal_dipilih->waktu()->where('waktu_id', $this->waktu_dipilih);
+
+                $kuota  =   $que_builder->first()->pivot->kuota;
+
+                $que_builder->update([
+                    'kuota' =>  $kuota + 1,
+                ]);
 
                 // ...
             }
@@ -241,9 +266,12 @@ class ZiarahForm extends Component
                 'jenis_kelamin',
                 'alamat_jenazah',
                 'waktu_dipilih',
+                'tanggal_dipilih',
                 'email',
                 'no_hp',
             );
+
+            $this->resetWaktuZiarah();
 
             $this->dapatkanJadwal();
 
@@ -258,9 +286,9 @@ class ZiarahForm extends Component
             // ...
         } catch (\Exception $e) {
 
-            $this->dispatchBrowserEvent('onActionInfo', [
+            return $this->dispatchBrowserEvent('onActionInfo', [
                 'type'      =>  'error',
-                'title'     =>  "Error",
+                'title'     =>  "Error!!",
                 'message'   =>  $e->getMessage(),
             ]);
 

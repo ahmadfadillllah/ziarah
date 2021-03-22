@@ -37,100 +37,96 @@
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col" class="sort" data-sort="name">Blok</th>
                                 <th scope="col" class="sort" data-sort="budget">Nama Peziarah</th>
                                 <th scope="col" class="sort" data-sort="status">Email</th>
                                 <th scope="col" class="sort" data-sort="status">Jenis Kelamin</th>
                                 <th scope="col" class="sort" data-sort="status">No. Handphone</th>
                                 <th scope="col" class="sort" data-sort="status">Nama Jenazah</th>
                                 <th scope="col" class="sort" data-sort="status">Alamat</th>
-                                <th scope="col" class="sort" data-sort="status">Jadwal Peziarah</th>
+                                <th scope="col" class="sort" data-sort="status">Waktu ziarah</th>
+                                <th scope="col" class="sort" data-sort="status">Tanggal ziarah</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="list">
+                            @foreach ($peziarah as $_peziarah)
+
                             <tr>
-                                <th scope="row">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Argon Design System</span>
-                                        </div>
-                                </th>
-                                <td class="budget">
-                                    $2500 USD
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <span class="status">Pending</span>
-                                    </span>
-                                </td>
-                                <td class="text-right">
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                {{-- <th scope="row">
+                                    <div class="media-body">
+                                        <span class="name mb-0 text-sm">{{ $_peziarah['blok'] }}</span>
                 </div>
-                <!-- Card footer -->
-                <div class="card-footer py-4">
-                    <nav aria-label="...">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">
-                                    <i class="fas fa-angle-left"></i>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="fas fa-angle-right"></i>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                </th> --}}
+                <td class="budget">
+                    {{ $_peziarah->nama }}
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">{{ $_peziarah->email }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">{{ $_peziarah->jenis_kelamin }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">{{ $_peziarah->no_hp }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">{{ $_peziarah->jenazah->nama }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">{{ $_peziarah->jenazah->alamat }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">
+                            {{ $_peziarah->waktu_ziarah[0]->dari }} -
+                            {{ $_peziarah->waktu_ziarah[0]->sampai }} :
+                            {{ $_peziarah->waktu_ziarah[0]->tipe }}
+                        </span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <span class="status">
+                            {{ $_peziarah->tanggal_ziarah[0]->tanggal }},
+                            {{ $_peziarah->tanggal_ziarah[0]->bulan }},
+                            {{ $_peziarah->tanggal_ziarah[0]->tahun }}
+                        </span>
+                    </span>
+                </td>
+                <td class="text-right">
+                    <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                </td>
+                </tr>
+                @endforeach
+                </tbody>
+                </table>
+            </div>
+            <!-- Card footer -->
+            <div class="card-footer py-4">
+
+                {{ $peziarah->links('pagination::bootstrap-4') }}
+
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection

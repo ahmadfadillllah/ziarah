@@ -21,11 +21,12 @@ class PeziarahFactory extends Factory
      */
     public function definition()
     {
+        $_ar = explode('+', $this->faker->e164PhoneNumber);
         return [
             'nama'  =>  $this->faker->name,
             'jenis_kelamin' => "Laki-Laki",
             'email' =>  $this->faker->email,
-            'no_hp' =>  $this->faker->phoneNumber,
+            'no_hp' =>  implode('', $_ar),
             'jenazah_id' => 1,
         ];
     }

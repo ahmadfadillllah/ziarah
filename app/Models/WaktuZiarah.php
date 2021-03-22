@@ -15,12 +15,14 @@ class WaktuZiarah extends Model
 
     public function tanggal()
     {
-        return $this->belongsToMany(TanggalZiarah::class, 'tanggal_has_waktu', 'waktu_id', 'tanggal_id')->withTimestamps();
+        return $this->belongsToMany(TanggalZiarah::class, 'tanggal_has_waktu', 'waktu_id', 'tanggal_id')
+            ->withPivot('kuota')->withTimestamps();
 
         // ...
     }
 
-    public function peziarah() {
+    public function peziarah()
+    {
 
         return $this->belongsToMany(Peziarah::class, 'peziarah_has_jadwal', 'waktu_id', 'peziarah_id')->withTimestamps();
     }
