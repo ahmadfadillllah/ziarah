@@ -255,6 +255,8 @@ class ZiarahForm extends Component
             // cek apakah masi ada kuota di tanggal dan jam ini
             $tanggal_dipilih    =   TanggalZiarah::find($this->tanggal_dipilih);
 
+            if (!$tanggal_dipilih) throw new FormException("Tanggal tidak tersediah. silahkan masukkan tanggal lain.");
+
             $que_builder    =   $tanggal_dipilih->waktu()->where('waktu_id', $this->waktu_dipilih);
 
             $kuota  =   $que_builder->first()->pivot->kuota;
