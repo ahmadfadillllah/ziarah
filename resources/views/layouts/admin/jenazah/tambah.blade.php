@@ -2,8 +2,7 @@
 @section('content')
 @section('title', 'Tambah Data Jenazah')
 
-<div class="header pb-6 d-flex align-items-center"
-    style="min-height: 100px;">
+<div class="header pb-6 d-flex align-items-center" style="min-height: 100px;">
     <!-- Mask -->
 </div>
 <!-- Page content -->
@@ -27,12 +26,18 @@
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-first-name">Blok</label>
                                         <input type="text" name="blok" class="form-control" placeholder="Blok">
+                                        @error('blok')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-email">Nama</label>
                                         <input type="text" name="nama" class="form-control" placeholder="Nama">
+                                        @error('nama')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -42,6 +47,9 @@
                                         <label class="form-control-label" for="input-first-name">Tanggal Lahir</label>
                                         <input type="date" name="tgl_lahir" class="form-control"
                                             placeholder="Tanggal Lahir">
+                                        @error('tgl_lahir')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -49,12 +57,18 @@
                                         <label class="form-control-label" for="input-first-name">Tanggal Wafat</label>
                                         <input type="date" name="tgl_wafat" class="form-control"
                                             placeholder="Tanggal Wafat">
+                                        @error('tgl_wafat')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-first-name">Agama</label>
                                         <input type="text" name="agama" class="form-control" placeholder="Agama">
+                                        @error('tgl_wafat')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -62,6 +76,9 @@
                                         <label class="form-control-label" for="input-first-name">Rumah Sakit</label>
                                         <input type="text" name="rumah_sakit" class="form-control"
                                             placeholder="Rumah Sakit">
+                                        @error('rumah_sakit')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +89,9 @@
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-address">Alamat</label>
                                         <input name="alamat" class="form-control" placeholder="Alamat" type="text">
+                                        @error('alamat')
+                                        <small style="color: #ff5656">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

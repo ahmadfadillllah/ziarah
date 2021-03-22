@@ -25,6 +25,17 @@ class dataJenazahController extends Controller
 
     public function post(Request $request)
     {
+        $request->validate([
+            'nama'  =>  ['required'],
+            'blok'  =>  ['nullable'],
+            'alamat'    =>  ['required'],
+            'agama' =>  ['nullable'],
+            'rumah_sakit'   =>  ['nullable'],
+            'tpk'   =>  ['nullable'],
+            'tgl_lahir' =>  ['nullable'],
+            'tgl_wafat' =>  ['nullable'],
+            'rumah_sakit'   =>  ['nullable'],
+        ]);
         \App\Models\dataJenazah::create($request->all());
         return redirect('/data-jenazah')->with('success', 'Berhasil Menambahkan Jenazah');
     }

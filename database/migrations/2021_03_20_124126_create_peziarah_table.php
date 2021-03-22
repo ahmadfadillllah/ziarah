@@ -20,6 +20,7 @@ class CreatePeziarahTable extends Migration
             $table->string('jenis_kelamin')->nullable();
             $table->string('email', 200)->nullable();
             $table->string('no_hp', 200)->nullable();
+            $table->string('peziarah_token', 250)->unique();
             $table->foreignId('jenazah_id');
             $table->foreign('jenazah_id')->on('jenazah')->references('id')->cascadeOnDelete();
             $table->timestamps();

@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Exceptions\FormException;
 use App\Models\{Jenazah, Peziarah, TanggalZiarah, WaktuZiarah};
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ZiarahForm extends Component
@@ -227,36 +229,58 @@ class ZiarahForm extends Component
             $jenazah = Jenazah::find($this->jenazah_id);
 
             if (($jenazah instanceof Jenazah) === false) {
-                throw new \Exception("Nama jenazah tidak ditemukan.");
+                throw new FormException("Nama jenazah tidak ditemukan.");
             }
+
+            // Bagian Token
+
+            $token_ = Str::slug(ucwords(uniqid("{$this->jenazah_id}j")));
+
+            $tokenHaveTaken = Peziarah::where('peziarah_token', '=', $token_)->get();
+
+            if (count($tokenHaveTaken) !== 0) throw new FormException("Terjadi kesalahan, harap di coba lagi");
+
+
+            // End Bagian Token
 
             $data['nama']           =   $this->nama;
             $data['jenazah_id']     =   $this->jenazah_id;
             $data['jenis_kelamin']  =   $this->jenis_kelamin;
             $data['email']          =   $this->email;
             $data['no_hp']          =   $this->no_hp;
+            $data['peziarah_token'] =   $token_;
+
+
+            // cek apakah masi ada kuota di tanggal dan jam ini
+            $tanggal_dipilih    =   TanggalZiarah::find($this->tanggal_dipilih);
+
+            $que_builder    =   $tanggal_dipilih->waktu()->where('waktu_id', $this->waktu_dipilih);
+
+            $kuota  =   $que_builder->first()->pivot->kuota;
+
+            // jika jika kuota sudah melebihi batas
+            if ($kuota > 2) throw new FormException("Kuota untuk jadwal yg anda masukkan telah penuh, silahkan pilih jadwal lagi.");
+
+            $que_builder->update([
+                'kuota' =>  $kuota + 1,
+            ]);
+
+            if (($tanggal_dipilih instanceof TanggalZiarah) === false) {
+                throw new FormException("Silahkan masukkan tanggal ziarah");
+            }
 
             $peziarah = $jenazah->peziarah()->create($data);
 
             if ($peziarah instanceof Peziarah) {
+
                 $peziarah->waktu_ziarah()->attach($this->waktu_dipilih, [
                     'tanggal_id' => $this->tanggal_dipilih,
-                ]);
-
-                $tanggal_dipilih    =   TanggalZiarah::find($this->tanggal_dipilih);
-
-                $que_builder      =   $tanggal_dipilih->waktu()->where('waktu_id', $this->waktu_dipilih);
-
-                $kuota  =   $que_builder->first()->pivot->kuota;
-
-                $que_builder->update([
-                    'kuota' =>  $kuota + 1,
                 ]);
 
                 // ...
             }
 
-            if (!$peziarah) throw new \Exception("Gagal menambahkan peziarah.");
+            if (!$peziarah) throw new FormException("Gagal menambahkan peziarah.");
 
             // reset semua property user
             $this->reset(
@@ -275,21 +299,33 @@ class ZiarahForm extends Component
 
             $this->dapatkanJadwal();
 
-            return  $this->dispatchBrowserEvent('onActionInfo', [
-                'type'    =>    'success',
-                'title'   =>    "Berhasil mendaftarkan peziarah!",
-                'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
-                                anda melalui email atau whatsapp yang telah anda
-                                masukkan & harap mematuhi protokol kesehatan.",
-            ]);
+            return $this->redirectRoute('kirim_email', $peziarah->id);
+
+            // return  $this->dispatchBrowserEvent('onActionInfo', [
+            //     'type'    =>    'success',
+            //     'title'   =>    "Berhasil mendaftarkan peziarah!",
+            //     'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
+            //                     anda melalui email.",
+            // ]);
 
             // ...
-        } catch (\Exception $e) {
+        } catch (FormException $e) {
 
             return $this->dispatchBrowserEvent('onActionInfo', [
                 'type'      =>  'error',
                 'title'     =>  "Error!!",
                 'message'   =>  $e->getMessage(),
+            ]);
+
+            // ...
+        } catch (\Exception $e) {
+
+            $msg = config('app.debug') === true ? $e->getMessage() : "Terjadi kesalahan.";
+
+            return $this->dispatchBrowserEvent('onActionInfo', [
+                'type'      =>  'error',
+                'title'     =>  "Error!!",
+                'message'   =>  $msg,
             ]);
 
             // ...

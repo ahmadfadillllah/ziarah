@@ -79,24 +79,40 @@ class JadwalSeeder extends Seeder
 
         $hari_ini = date('d', time());
 
+        for ($_bulan = 1; $_bulan <= 12; $_bulan++) {
 
-        for ($hari = 1; $hari <= $jumlah_hari_dalam_sebulah; $hari++) {
+            $isActive = 1;
 
-            if ($hari < intval($hari_ini)) {
+            if ($_bulan < intval($bulan_skarang)) {
                 $isActive = 0;
-            } else {
-                $isActive = 1;
             }
 
-            TanggalZiarah::create([
-                'tanggal'   =>  $hari,
-                'bulan'     =>  $bulan_skarang,
-                'tahun'     =>  $tahun_skarang,
-                'aktif'     =>  $isActive,
-            ]);
+            for ($hari = 1; $hari <= $jumlah_hari_dalam_sebulah; $hari++) {
+
+                if ($_bulan === intval($bulan_skarang)) {
+
+                    if ($hari <= intval($hari_ini)) {
+                        $isActive = 0;
+                    } else {
+                        $isActive = 1;
+                    }
+
+                    // ...
+                }
+
+                TanggalZiarah::create([
+                    'tanggal'   =>  $hari,
+                    'bulan'     =>  $_bulan,
+                    'tahun'     =>  $tahun_skarang,
+                    'aktif'     =>  $isActive,
+                ]);
+
+                // ...
+            }
 
             // ...
         }
+
 
 
         $tanggal = TanggalZiarah::get();

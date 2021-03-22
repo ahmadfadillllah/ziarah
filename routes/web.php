@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\dataJenazahController;
 use App\Http\Controllers\DataPeziarahController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\tokenController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\ZiarahForm;
@@ -26,6 +27,7 @@ use Maatwebsite\Excel\Facades\Excel;
 */
 
 Route::get('/', ZiarahForm::class)->name('daftar');
+Route::get('/kirim-email/{peziarah_id}', [MailController::class,  'kirimEmail'])->name('kirim_email');
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -76,7 +78,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         ini_set('max_execution_time', 300);
 
-        DB::table('jenazah')->delete();
+        // DB::table('jenazah')->delete();
 
         $data = Excel::toArray(new JenazahImport, storage_path('/app/MACANDA GROUP.xlsx'));
         $index = 0;
@@ -90,16 +92,29 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
             try {
 
-                Jenazah::create([
-                    'blok'  =>  $jenazah[0],
-                    'nama' => $jenazah[1],
-                    'tgl_lahir' => $jenazah[2],
-                    'tgl_wafat' => $jenazah[3],
-                    'alamat' => $jenazah[5],
-                    'agama'   =>  $jenazah[4],
-                    'rumah_sakit'   =>  $jenazah[8],
-                    'tpk'   =>  $jenazah[9]
-                ]);
+                // mencari apakah data sudah ada di dalam database
+                $isExists = Jenazah::where([
+                    ['blok', '=', $jenazah[0]],
+                    ['nama', '=', $jenazah[1]],
+                    ['alamat', '=', $jenazah[5]],
+                ])->get();
+
+                // jika data belum ada maka tambahkan data
+                if (count($isExists) === 0) {
+
+                    Jenazah::create([
+                        'blok'  =>  $jenazah[0],
+                        'nama' => $jenazah[1],
+                        'tgl_lahir' => $jenazah[2],
+                        'tgl_wafat' => $jenazah[3],
+                        'alamat' => $jenazah[5],
+                        'agama'   =>  $jenazah[4],
+                        'rumah_sakit'   =>  $jenazah[8],
+                        'tpk'   =>  $jenazah[9]
+                    ]);
+
+                    // ...
+                }
 
                 // ...
             } catch (\Exception $e) {
