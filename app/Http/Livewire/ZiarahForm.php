@@ -25,7 +25,7 @@ class ZiarahForm extends Component
         $this->dapatkanJadwal();
         $this->dapatkanTanggal();
 
-        $this->fakeData();
+        // $this->fakeData();
 
         $this->resetWaktuZiarah("Masukkan tanggal terlebih dahulu");
     }
