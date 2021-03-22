@@ -25,7 +25,7 @@ class ZiarahForm extends Component
         $this->dapatkanJadwal();
         $this->dapatkanTanggal();
 
-        $this->fakeData();
+        // $this->fakeData();
 
         $this->resetWaktuZiarah("Masukkan tanggal terlebih dahulu");
     }
@@ -299,7 +299,7 @@ class ZiarahForm extends Component
 
             $this->dapatkanJadwal();
 
-            return $this->redirectRoute('kirim_email', $peziarah->id);
+            return $this->redirectRoute('kirim_email', $peziarah->peziarah_token);
 
             // return  $this->dispatchBrowserEvent('onActionInfo', [
             //     'type'    =>    'success',
