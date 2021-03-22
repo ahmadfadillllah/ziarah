@@ -144,21 +144,25 @@
                     @enderror
                 </div>
 
-                <div class="p-t-15">
+                <div class="p-t-15 action-sect">
                     <button class="btn btn--radius-2 btn--blue" type="submit" wire:click="simpan" wire:target='simpan'
                         wire:loading.attr='disabled' wire:loading.class='btn-disabled'>
                         <span wire:target='simpan' wire:loading.class='d-none'>Submit</span>
                         <span class="d-none" wire:target='simpan' wire:loading.class.remove='d-none'>Mengirim</span>
                     </button>
+                    <div class="thumb">
+                        <img src="{{ asset('\lg.jpg') }}">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <br><br>
-    <center>
-        &copy; 2021 <a href="http://ahmadfadillah.my.id" class="font-weight-bold ml-1" target="_blank">ahmadfadillllah</a>
-        </center>
+    <center style='color: #d3d3d3'>
+        &copy; 2021 <a href="http://ahmadfadillah.my.id" class="font-weight-bold ml-1" target="_blank"
+            style='color: #dfdfdf'>ahmadfadillllah</a>
+    </center>
 
     <script>
         window.addEventListener('onActionInfo', event => {

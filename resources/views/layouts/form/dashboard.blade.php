@@ -112,6 +112,24 @@
         }
     </style>
 
+    <style>
+        div.action-sect {
+            position: relative;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .thumb {
+            position: relative;
+            width: 100px
+        }
+
+        .thumb img {
+            width: 100%
+        }
+    </style>
+
     <script type="module" src="{{ asset('assets/alpinejs/dist/alpine.js') }}"></script>
     <script nomodule src="{{ asset('assets/alpinejs/dist/alpine-ie11.js') }}" defer></script>
 

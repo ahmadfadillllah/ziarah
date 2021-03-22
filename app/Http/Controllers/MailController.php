@@ -12,9 +12,9 @@ class MailController extends Controller
 {
 
 
-    public function kirimEmail($peziarah_id)
+    public function kirimEmail($peziarah_token)
     {
-        $peziarah = Peziarah::find($peziarah_id);
+        $peziarah = Peziarah::where('peziarah_token', '=', $peziarah_token)->first();
         $data = [
             'title'     =>  'Bukti pendaftaran ziarah ke TPK Macanda',
             'body'      =>  'Body test',
@@ -36,7 +36,9 @@ class MailController extends Controller
 
         Mail::to($peziarah->email)->send(new JadwalMail($data));
 
-        return "Berhasil mendaftarkan peziarah! Kami akan mengirimkan pemberitahuan terkait jadwal anda melalui email. <a href='/'>kembali</a>";
+        return view('success');
+
+        // return "Berhasil mendaftarkan peziarah! Kami akan mengirimkan pemberitahuan terkait jadwal anda melalui email. <a href='/'>kembali</a>";
 
         // ...
     }
