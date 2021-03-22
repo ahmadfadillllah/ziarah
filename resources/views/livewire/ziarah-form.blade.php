@@ -155,26 +155,10 @@
         </div>
     </div>
 
-    <footer class="footer pt-0">
-        <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6">
-                <div class="copyright text-center  text-lg-left  text-muted">
-                    &copy; 2021 <a href="https://covid19.sulselprov.go.id/" class="font-weight-bold ml-1"
-                        target="_blank">Satgas Covid-19</a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                    <li class="nav-item">
-                        <a href="https://infocorona.makassar.go.id/" class="nav-link" target="_blank">Info Corona</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://covid19.sulselprov.go.id/data" class="nav-link" target="_blank">Data</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <hr>
+    <center>
+        &copy; 2021 <a href="http://ahmadfadillah.my.id" class="font-weight-bold ml-1" target="_blank">ahmadfadillllah</a>
+        </center>
 
     <script>
         window.addEventListener('onActionInfo', event => {
