@@ -78,7 +78,7 @@
         <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Search form -->
+                    {{-- <!-- Search form -->
                     <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
                         <div class="form-group mb-0">
                             <div class="input-group input-group-alternative input-group-merge">
@@ -92,7 +92,7 @@
                             aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                    </form>
+                    </form> --}}
                     <!-- Navbar links -->
                     <ul class="navbar-nav align-items-center  ml-md-auto ">
                         <li class="nav-item d-xl-none">
@@ -156,8 +156,8 @@
             <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6">
                     <div class="copyright text-center  text-lg-left  text-muted">
-                        &copy; 2021 <a href="https://covid19.sulselprov.go.id/" class="font-weight-bold ml-1"
-                            target="_blank">Satgas Covid-19</a>
+                        &copy; 2021 <a href="http://ahmadfadillah.my.id" class="font-weight-bold ml-1"
+                            target="_blank">ahmadfadillllah</a>
                     </div>
                 </div>
                 <div class="col-lg-6">

@@ -15,10 +15,10 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="col-lg-6 col-5 text-right">
+                {{-- <div class="col-lg-6 col-5 text-right">
                     <a href="#" class="btn btn-sm btn-neutral">New</a>
                     <a href="#" class="btn btn-sm btn-neutral">Filters</a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -31,6 +31,22 @@
                 <!-- Card header -->
                 <div class="card-header border-0">
                     <h3 class="mb-0">List Peziarah</h3>
+                    <br>
+                    <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main"
+                            method="GET" action="/data-peziarah">
+                            <div class="form-group mb-0">
+                                <div class="input-group input-group-alternative input-group-merge">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input name="cari" class="form-control" placeholder="Search" type="text">
+                                </div>
+                            </div>
+                            <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
+                                aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </form>
                 </div>
                 <!-- Light table -->
                 <div class="table-responsive">
@@ -45,7 +61,7 @@
                                 <th scope="col" class="sort" data-sort="status">Alamat</th>
                                 <th scope="col" class="sort" data-sort="status">Waktu ziarah</th>
                                 <th scope="col" class="sort" data-sort="status">Tanggal ziarah</th>
-                                <th scope="col">Aksi</th>
+                                {{-- <th scope="col">Aksi</th> --}}
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -97,13 +113,13 @@
                 <td>
                     <span class="badge badge-dot mr-4">
                         <span class="status">
-                            {{ $_peziarah->tanggal_ziarah[0]->tanggal }},
-                            {{ $_peziarah->tanggal_ziarah[0]->bulan }},
+                            {{ $_peziarah->tanggal_ziarah[0]->tanggal }} -
+                            {{ $_peziarah->tanggal_ziarah[0]->bulan }} -
                             {{ $_peziarah->tanggal_ziarah[0]->tahun }}
                         </span>
                     </span>
                 </td>
-                <td class="text-right">
+                {{-- <td class="text-right">
                     <div class="dropdown">
                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
@@ -114,7 +130,7 @@
                             <a class="dropdown-item" href="#">Delete</a>
                         </div>
                     </div>
-                </td>
+                </td> --}}
                 </tr>
                 @endforeach
                 </tbody>
