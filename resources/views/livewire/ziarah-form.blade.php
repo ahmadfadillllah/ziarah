@@ -111,6 +111,7 @@
                                 {{$_tanggal['tanggal']}} -
                                 {{ date('F',strtotime("01-".$_tanggal['bulan']."-".date("Y")))}} -
                                 {{$_tanggal['tahun']}}
+                                ({{$_tanggal->waktu()->where('kuota', '<', 2)->count()}})
                             </option>
                             @endif
                             @endforeach

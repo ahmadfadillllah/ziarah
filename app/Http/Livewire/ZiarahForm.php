@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
+// Mark1
 class ZiarahForm extends Component
 {
     public $nama, $jenis_kelamin, $email, $no_hp;
@@ -25,7 +26,7 @@ class ZiarahForm extends Component
         $this->dapatkanJadwal();
         $this->dapatkanTanggal();
 
-        // $this->fakeData();
+        $this->fakeData();
 
         $this->resetWaktuZiarah("Masukkan tanggal terlebih dahulu");
     }
@@ -299,14 +300,14 @@ class ZiarahForm extends Component
 
             $this->dapatkanJadwal();
 
-            return $this->redirectRoute('kirim_email', $peziarah->peziarah_token);
+            // return $this->redirectRoute('kirim_email', $peziarah->peziarah_token);
 
-            // return  $this->dispatchBrowserEvent('onActionInfo', [
-            //     'type'    =>    'success',
-            //     'title'   =>    "Berhasil mendaftarkan peziarah!",
-            //     'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
-            //                     anda melalui email.",
-            // ]);
+            return  $this->dispatchBrowserEvent('onActionInfo', [
+                'type'    =>    'success',
+                'title'   =>    "Berhasil mendaftarkan peziarah!",
+                'message' =>    "Kami akan mengirimkan pemberitahuan terkait jadwal
+                                anda melalui email.",
+            ]);
 
             // ...
         } catch (FormException $e) {
