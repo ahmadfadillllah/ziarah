@@ -29,7 +29,6 @@ use Maatwebsite\Excel\Facades\Excel;
 Route::get('/', ZiarahForm::class)->name('daftar');
 Route::get('/kirim-email/{peziarah_id}', [MailController::class,  'kirimEmail'])->name('kirim_email');
 
-
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/data-peziarah', [DataPeziarahController::class, 'index'])->name('dataPeziarah');
