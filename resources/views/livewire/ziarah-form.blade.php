@@ -127,15 +127,21 @@
                     <label class="label">Jadwal Ziarah*</label>
                     <div class="select-wrapper"
                         style="width: 100%; box-shadow: 0 0 5px #99999971; border-radius: 5px; overflow: hidden">
-                        <select class="select" wire:model.defer="waktu_dipilih">
+                        <select class="select" wire:model="waktu_dipilih">
                             <option selected="selected" wire:click="$set('waktu_ziarah', [])">Pilih Jam</option>
                             @foreach ($waktu_ziarah as $waktu)
                             @if ($waktu['id'] === null)
                             <option disabled>{{$waktu['pesan']}}</option>
                             @else
+                            @if ($waktu['dari'] !== '--')
+                            <option disabled>
+                                -------------
+                            </option>
+                            @else
                             <option @if( $waktu_dipilih===$waktu['id']) selected @endif value="{{ $waktu['id'] }}">
                                 {{$waktu['dari']}} - {{$waktu['sampai']}} : {{$waktu['tipe']}}
                             </option>
+                            @endif
                             @endif
                             @endforeach
                         </select>
@@ -146,8 +152,9 @@
                 </div>
 
                 <div class="p-t-15 action-sect">
-                    <button class="btn btn--radius-2 btn--blue" type="submit" wire:click="simpan" wire:target='simpan'
-                        wire:loading.attr='disabled' wire:loading.class='btn-disabled'>
+                    <button class="btn btn--radius-2 btn--blue" type="submit" wire:click="simpan"
+                        wire:target='simpan, waktu_dipilih, daftar_jadwal, namaJenazah, waktu_ziarah, tanggal_ziarah'
+                        wire:loading.class='btn-disabled' wire:loading.attr='disabled'>
                         <span wire:target='simpan' wire:loading.class='d-none'>Submit</span>
                         <span class="d-none" wire:target='simpan' wire:loading.class.remove='d-none'>Mengirim</span>
                     </button>

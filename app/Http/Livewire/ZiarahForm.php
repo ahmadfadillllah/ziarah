@@ -29,6 +29,8 @@ class ZiarahForm extends Component
         $this->fakeData();
 
         $this->resetWaktuZiarah("Masukkan tanggal terlebih dahulu");
+
+        // ...
     }
 
     private function fakeData()
@@ -241,7 +243,6 @@ class ZiarahForm extends Component
 
             if (count($tokenHaveTaken) !== 0) throw new FormException("Terjadi kesalahan, harap di coba lagi");
 
-
             // End Bagian Token
 
             $data['nama']           =   $this->nama;
@@ -250,7 +251,6 @@ class ZiarahForm extends Component
             $data['email']          =   $this->email;
             $data['no_hp']          =   $this->no_hp;
             $data['peziarah_token'] =   $token_;
-
 
             // cek apakah masi ada kuota di tanggal dan jam ini
             $tanggal_dipilih    =   TanggalZiarah::find($this->tanggal_dipilih);
@@ -262,7 +262,7 @@ class ZiarahForm extends Component
             $kuota  =   $que_builder->first()->pivot->kuota;
 
             // jika jika kuota sudah melebihi batas
-            if ($kuota > 2) throw new FormException("Kuota untuk jadwal yg anda masukkan telah penuh, silahkan pilih jadwal lagi.");
+            if ($kuota >= 2) throw new FormException("Kuota untuk jadwal yg anda masukkan telah penuh, silahkan pilih jadwal lagi.");
 
             $que_builder->update([
                 'kuota' =>  $kuota + 1,
@@ -304,6 +304,7 @@ class ZiarahForm extends Component
 
             // return $this->redirectRoute('kirim_email', $peziarah->peziarah_token);
 
+
             return  $this->dispatchBrowserEvent('onActionInfo', [
                 'type'    =>    'success',
                 'title'   =>    "Berhasil mendaftarkan peziarah!",
@@ -316,18 +317,18 @@ class ZiarahForm extends Component
 
             return $this->dispatchBrowserEvent('onActionInfo', [
                 'type'      =>  'error',
-                'title'     =>  "Error!!",
+                'title'     =>  "Input Error!!",
                 'message'   =>  $e->getMessage(),
             ]);
 
             // ...
         } catch (\Exception $e) {
 
-            $msg = config('app.debug') === true ? $e->getMessage() : "Terjadi kesalahan.";
+            $msg = config('app.debug') === false ? $e->getMessage() : "Terjadi kesalahan.";
 
             return $this->dispatchBrowserEvent('onActionInfo', [
                 'type'      =>  'error',
-                'title'     =>  "Error!!",
+                'title'     =>  "System Error!!",
                 'message'   =>  $msg,
             ]);
 
